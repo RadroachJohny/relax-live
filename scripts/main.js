@@ -50,11 +50,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('click',closeHandler);
       });
     });
-
-    function toggleRepairMenu() {
-      
-      
-    }
   };
 
   const accordeon = () => {
@@ -279,12 +274,46 @@ document.addEventListener('DOMContentLoaded', () => {
   const reviewsSlider = () => {
     const sliderWrap = document.querySelector('.reviews-slider-wrap'),
           sliderContainer = sliderWrap.querySelector('.reviews-slider'),
-          slides = sliderWrap.querySelectorAll('.reviews-slider__slide');
+          sliderOuter = sliderWrap.querySelector('.reviews-slider__outer'),
+          slides = sliderWrap.querySelectorAll('.reviews-slider__slide'),
+          arrowLeft = document.getElementById('reviews-arrow_left'),
+          arrowRight = document.getElementById('reviews-arrow_right');
 
-          console.log(sliderWrap);
-          console.log(sliderContainer);
-          console.log(slides);
+    let offset = 0;
+    let width = window.getComputedStyle(sliderWrap).width;
+
+    sliderOuter.style.overflow = 'hidden';
+
+    sliderContainer.style.width = 100 * slides.length + '%';
+    sliderContainer.style.display = 'flex';
+    sliderContainer.style.transition = 'transform 0.5s ease';
+
+    slides.forEach(slide => {
+      slide.style.width = width;
+    });
+
+    arrowRight.addEventListener('click', () => {
+      if (offset === +width.slice(0, width.length - 2) * (slides.length -1)) {
+        offset = 0;
+      } else {
+        offset += +width.slice(0, width.length - 2);
+      }
+      
+      sliderContainer.style.transform = `translateX(${-offset}px)`;
+    });
+
+    arrowLeft.addEventListener('click', () => {
+      if (offset == 0 ) {
+        offset = +width.slice(0, width.length - 2) * (slides.length -1);
+      } else {
+        offset -= +width.slice(0, width.length - 2);
+      }
+
+      sliderContainer.style.transform = `translateX(${-offset}px)`;
+    });
   };
+
+ 
 
 
   reviewsSlider();
