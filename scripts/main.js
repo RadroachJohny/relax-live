@@ -1,5 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
 
+  const phoneAccordeon = () => {
+    slideTrigger = document.querySelector('.header-contacts__arrow'),
+    phoneSliderBlock = document.querySelector('.header-contacts__phone-number-accord');
+
+    slideTrigger.addEventListener('click', (e) => {
+      if (e.target.closest('.header-contacts__arrow')) {
+        slideTrigger.classList.toggle('active');
+        phoneSliderBlock.classList.toggle('active');
+      }
+    });
+
+  };  
+
+
   const accordeon = () => {
     const accordionWrapper = document.querySelector('.accordion'),
           titleBlock = accordionWrapper.querySelectorAll('.title_block'),
@@ -48,9 +62,6 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   };
 
-  tabs();
-  accordeon();
-
   const noBodyJump = () => {
     const block = document.createElement('div');
 
@@ -66,25 +77,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const scrollWidth = block.offsetWidth - block.clientWidth;
     block.remove();
 
-    return scrollWidth;
+    document.body.style.overflow = 'hidden';
+    document.body.style.paddingRight = scrollWidth + 'px';
   }
 
   const privacyPopup = () => {
-    const privacy = document.querySelector('.link-privacy'),
+    const privacy = document.querySelectorAll('.link-privacy'),
           privacyPopup = document.querySelector('.popup-privacy'),
           privacClose = privacyPopup.querySelector('.close');
     
   
-    privacy.addEventListener('click', () =>{
-      privacyPopup.style.visibility = 'visible';
-      document.body.style.overflow = 'hidden';
-      document.body.style.paddingRight = noBodyJump() + 'px';
-    });
+    privacy.forEach(item => {
+      item.addEventListener('click', () =>{
+        privacyPopup.style.visibility = 'visible';
+        noBodyJump();
+      });
+    })
     privacClose.addEventListener('click', () =>{
       privacyPopup.style.visibility = 'hidden';
       document.body.style.overflow = '';
       document.body.style.paddingRight = '';
     });
   };
+
+  phoneAccordeon();
   privacyPopup();
+  tabs();
+  accordeon();
+
 });
