@@ -13,6 +13,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
   };  
 
+  const sideMenu = () => {
+    const menuIcon = document.querySelector('.menu__icon'),
+    popupDialogMenu = document.querySelector('.popup-dialog-menu'),
+    closeMenu = popupDialogMenu.querySelector('.close-menu');
+
+    menuIcon.addEventListener('click', (e) => {
+      console.log(e.target);
+      if (window.innerWidth < 576) {
+        console.log('less than 576px');
+      }
+      popupDialogMenu.classList.add('active');
+    })
+
+    closeMenu.addEventListener('click', () => {
+      popupDialogMenu.classList.remove('active');
+    });
+  };
 
   const accordeon = () => {
     const accordionWrapper = document.querySelector('.accordion'),
@@ -101,6 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   phoneAccordeon();
+  sideMenu();
   privacyPopup();
   tabs();
   accordeon();

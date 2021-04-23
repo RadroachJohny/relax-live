@@ -4800,9 +4800,10 @@ div.wave-block:nth-child(17):after {
   -webkit-transition: 1s;
   transition: 1s;
 }
-.popup-dialog-menu.top {
-  -webkit-transform: translate3d(0, -100%, 0);
-  transform: translate3d(0, -100%, 0);
+
+.popup-dialog-menu.active {
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
 }
 @media (max-width: 1024px) {
   .popup-dialog-menu {
@@ -4819,8 +4820,8 @@ div.wave-block:nth-child(17):after {
     background: #322823;
     border-bottom-left-radius: 100% 17%;
     border-bottom-right-radius: 100% 17%;
-    -webkit-transform: translate3d(0, -100vh, 0);
-    transform: translate3d(0, -100vh, 0);
+    -webkit-transform: translate3d(0, -150vh, 0);
+    transform: translate3d(0, -150vh, 0);
     left: -5%;
   }
 }
