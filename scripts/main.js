@@ -37,14 +37,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     popupTrigger.forEach(trigger => {
       trigger.addEventListener('click', (e) => {
+        console.log('clicking');
         if (trigger.closest('.popup-dialog-menu')) {
           console.log('menu');
           document.querySelector('.popup-dialog-menu').classList.remove('active');
-          toggleRepairMenu();
+          popupModal.style.visibility = 'visible';
           noBodyJump();
           document.addEventListener('click',closeHandler);
         }
-        toggleRepairMenu();
+        popupModal.style.visibility = 'visible';
         noBodyJump();
         document.addEventListener('click',closeHandler);
       });
@@ -52,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function toggleRepairMenu() {
       
-      popupModal.style.visibility = 'visible';
+      
     }
   };
 
@@ -146,20 +147,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeHandler = (e) => {
       const target = e.target;
       if (target.classList.contains('close')) {
-        console.log(111);
-        closeModal();
+        // closeModal();
+        const popups = document.querySelectorAll('.popup');
+        popups.forEach(popup => popup.style.visibility = ``);
+        clearBodyLock();
+        // СЛушатель нажатия на Esc убирается полсе закрытия модалки
+        document.removeEventListener('click',closeHandler);
       }
-      console.log(target);
     
-  }
-
-  const closeModal = () => {
-    console.log(2222);
-    const popups = document.querySelectorAll('.popup');
-    popups.forEach(popup => popup.style.visibility = ``);
-    clearBodyLock();
-    // СЛушатель нажатия на Esc убирается полсе закрытия модалки
-    document.removeEventListener('click',closeHandler);
   }
 
   const phoneValidation = () => {
@@ -215,36 +210,85 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const formSend = () => {
-    const forms = document.querySelectorAll('form');
+    const forms = document.querySelectorAll('form'),
+          popupThanks = document.querySelector('.popup-thank');
 
-    const messageSend = (data) => {
-      fetch('server.php', {
+    const messageSend = async (url, data) => {   
+      console.log(data);   
+     let res = await fetch(url, {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json; charset=utf-8'
-        },
-        body: JSON.stringify(data)
+         headers: {
+        'Content-Type': 'application/json'
+      },
+        body: JSON.stringify(data),
       })
+
+      if (!res.ok) {
+        throw new Error(`Ошибка ${res.status}. Ой, что-то пошло не так. Пожалуйста попробуйсте снова отправить письмо немного позже.`);
+      }
+ 
+      return await res.text();
     }
     
     forms.forEach(form => {
+
       form.addEventListener('submit', (e) => {
         e.preventDefault();
         const policyCheckbox = form.querySelector('.checkbox__input');
+        console.log(policyCheckbox);
         if (!policyCheckbox.checked) {
           alert('Вы должны согласиться на обработку данных перед отправкой');
           return;
         }
 
-        const formData = new FormData(form);
+        const formData = new FormData(form);           
+        const jsonFormData = {};
+        for (const pair of formData) {
+          jsonFormData[pair[0]] = pair[1];
+        }        
         
-        messageSend(formData)
-          .then((res) => console.log(res))
-          // .then(res => console.log(res));
+        messageSend('server.php', jsonFormData)
+          .then(text => console.log(text))
+          .then(() => {
+            popupThanks.style.visibility = 'visible';
+            noBodyJump();
+            document.addEventListener('click',closeHandler);
+          }
+          )
+          .catch(err => alert(err))
+          .finally(() => {
+            form.reset();
+            policyCheckbox.checked = false;
+          })
       });
     });
   };
 
+  const consultPopup = () => {
+    const consultBtns = document.querySelectorAll('.consult-btn'),
+          consultPopup = document.querySelector('.popup-consultation');
+    consultBtns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        consultPopup.style.visibility = 'visible';
+        noBodyJump();
+        document.addEventListener('click',closeHandler);
+      });
+    })
+  }
+
+  const reviewsSlider = () => {
+    const sliderWrap = document.querySelector('.reviews-slider-wrap'),
+          sliderContainer = sliderWrap.querySelector('.reviews-slider'),
+          slides = sliderWrap.querySelectorAll('.reviews-slider__slide');
+
+          console.log(sliderWrap);
+          console.log(sliderContainer);
+          console.log(slides);
+  };
+
+
+  reviewsSlider();
+  consultPopup();
   phoneAccordeon();
   sideMenu();
   repaitTypesModal();
