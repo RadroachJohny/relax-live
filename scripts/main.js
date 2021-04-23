@@ -31,6 +31,31 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
+  const repaitTypesModal = () => {
+    const popupTrigger = document.querySelectorAll('.repair-popup'),
+          popupModal = document.querySelector('.popup-repair-types');
+
+    popupTrigger.forEach(trigger => {
+      trigger.addEventListener('click', (e) => {
+        if (trigger.closest('.popup-dialog-menu')) {
+          console.log('menu');
+          document.querySelector('.popup-dialog-menu').classList.remove('active');
+          toggleRepairMenu();
+          noBodyJump();
+          document.addEventListener('click',closeHandler);
+        }
+        toggleRepairMenu();
+        noBodyJump();
+        document.addEventListener('click',closeHandler);
+      });
+    });
+
+    function toggleRepairMenu() {
+      
+      popupModal.style.visibility = 'visible';
+    }
+  };
+
   const accordeon = () => {
     const accordionWrapper = document.querySelector('.accordion'),
           titleBlock = accordionWrapper.querySelectorAll('.title_block'),
@@ -98,29 +123,135 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.style.paddingRight = scrollWidth + 'px';
   }
 
+  const clearBodyLock = () => {
+    document.body.style.overflow = '';
+    document.body.style.paddingRight = '';
+  }
+
   const privacyPopup = () => {
     const privacy = document.querySelectorAll('.link-privacy'),
-          privacyPopup = document.querySelector('.popup-privacy'),
-          privacClose = privacyPopup.querySelector('.close');
+          privacyPopup = document.querySelector('.popup-privacy');
     
   
     privacy.forEach(item => {
-      item.addEventListener('click', () =>{
+      item.addEventListener('click', (e) =>{
         privacyPopup.style.visibility = 'visible';
         noBodyJump();
+        document.addEventListener('click',closeHandler);
       });
     })
-    privacClose.addEventListener('click', () =>{
-      privacyPopup.style.visibility = 'hidden';
-      document.body.style.overflow = '';
-      document.body.style.paddingRight = '';
+
+  };
+
+  const closeHandler = (e) => {
+      const target = e.target;
+      if (target.classList.contains('close')) {
+        console.log(111);
+        closeModal();
+      }
+      console.log(target);
+    
+  }
+
+  const closeModal = () => {
+    console.log(2222);
+    const popups = document.querySelectorAll('.popup');
+    popups.forEach(popup => popup.style.visibility = ``);
+    clearBodyLock();
+    // СЛушатель нажатия на Esc убирается полсе закрытия модалки
+    document.removeEventListener('click',closeHandler);
+  }
+
+  const phoneValidation = () => {
+    const phoneInputs = document.querySelectorAll('input[name=phone]');
+    phoneInputs.forEach((input) => {
+      let keyCode;
+  
+      const mask = (event) => {
+  
+          event.keyCode && (keyCode = event.keyCode);
+          let pos = input.selectionStart;
+  
+          if (pos < 3) {
+              event.preventDefault();
+          }
+          let matrix = "+7 (___) ___-__-__",
+              i = 0,
+              def = matrix.replace(/\D/g, ""),
+              val = input.value.replace(/\D/g, ""),
+              newValue = matrix.replace(/[_\d]/g, (a) => {
+                  if (i < val.length) {
+                      return val.charAt(i++) || def.charAt(i);
+                  } else {
+                      return a;
+                  }
+              });
+          i = newValue.indexOf("_");
+  
+          if (i != -1) {
+              i < 5 && (i = 3);
+              newValue = newValue.slice(0, i)
+          }
+  
+          let reg = matrix.substr(0, input.value.length).replace(/_+/g,
+              (a) => {
+                  return "\\d{1," + a.length + "}";
+              }).replace(/[+()]/g, "\\$&");
+          reg = new RegExp("^" + reg + "$");
+          if (!reg.test(input.value) || input.value.length < 5 || keyCode > 47 && keyCode < 58) {
+              input.value = newValue;
+          }
+          if (event.type == "blur" && input.value.length < 5) {
+              input.value = "";
+          }
+      };
+  
+      input.addEventListener("input", mask, false);
+      input.addEventListener("focus", mask, false);
+      input.addEventListener("blur", mask, false);
+      // input.addEventListener("keydown", mask, false);
+  
+  });
+  };
+
+  const formSend = () => {
+    const forms = document.querySelectorAll('form');
+
+    const messageSend = (data) => {
+      fetch('server.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json; charset=utf-8'
+        },
+        body: JSON.stringify(data)
+      })
+    }
+    
+    forms.forEach(form => {
+      form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const policyCheckbox = form.querySelector('.checkbox__input');
+        if (!policyCheckbox.checked) {
+          alert('Вы должны согласиться на обработку данных перед отправкой');
+          return;
+        }
+
+        const formData = new FormData(form);
+        
+        messageSend(formData)
+          .then((res) => console.log(res))
+          // .then(res => console.log(res));
+      });
     });
   };
 
   phoneAccordeon();
   sideMenu();
+  repaitTypesModal();
   privacyPopup();
   tabs();
   accordeon();
+  phoneValidation();
+  formSend();
 
 });
