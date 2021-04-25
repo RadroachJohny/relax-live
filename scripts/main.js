@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
-  const repaitTypesModal = () => {
+  const repairTypesModal = () => {
     const popupTrigger = document.querySelectorAll('.repair-popup'),
           popupModal = document.querySelector('.popup-repair-types');
 
@@ -117,12 +117,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.body.style.overflow = 'hidden';
     document.body.style.paddingRight = scrollWidth + 'px';
-  }
+  };
 
   const clearBodyLock = () => {
     document.body.style.overflow = '';
     document.body.style.paddingRight = '';
-  }
+  };
 
   const privacyPopup = () => {
     const privacy = document.querySelectorAll('.link-privacy'),
@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.removeEventListener('click',closeHandler);
       }
     
-  }
+  };
 
   const phoneValidation = () => {
     const phoneInputs = document.querySelectorAll('input[name=phone]');
@@ -269,7 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('click',closeHandler);
       });
     })
-  }
+  };
 
   const reviewsSlider = () => {
     const sliderWrap = document.querySelector('.reviews-slider-wrap'),
@@ -318,11 +318,13 @@ document.addEventListener('DOMContentLoaded', () => {
     class SliderCarousel{
       constructor({main, wrap, next, prev, infinity = false, position = 0,
          slidesToShow = 3, responsive = []}) {
-        if (!this.main || !this.wrap) {
-          console.warn('slider-carousel: Необходимо 2 селектора, "main" и "wrapper"');
-        }
         this.main = document.querySelector(main);
         this.wrap = document.querySelector(wrap);
+
+        if (!this.main || !this.wrap) {          
+          console.warn('slider-carousel: Необходимо 2 селектора, "main" и "wrapper"');          
+        }
+
         this.slides = document.querySelector(wrap).children;
         this.next = document.querySelector(next);
         this.prev = document.querySelector(prev);
@@ -337,11 +339,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         
       }
-
-      init() {
-        
-        console.log(this.prev);
-        console.log(this.next);
+      init() {        
+        // console.log(this.prev);
+        // console.log(this.next);
         this.addGloClass();
         this.addStyle();
 
@@ -368,7 +368,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       addStyle() {
         let style = document.getElementById('sliderCarousel-style');
-        console.log(style);
         if(!style){
         style = document.createElement('style');
         style.id = 'sliderCarousel-style';
@@ -454,7 +453,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const slidesToShowDefault = this.slidesToShow;
         const allResponse = this.responsive.map(item => item.breakpoint);
         const maxResponse = Math.max(...allResponse);
-        console.log(maxResponse);
 
         const checkResponse = () => {
           const widthWindow = document.documentElement.clientWidth;
@@ -509,14 +507,95 @@ document.addEventListener('DOMContentLoaded', () => {
    
  };
 
+ const agreementFancybox = () => {
+  const agreementRow = document.querySelector('.transparency-slider'),
+        agreementDiv = agreementRow.querySelectorAll('.transparency-item__img'),
+        popupTransparency = document.querySelector('.popup-transparency');
+
+  
+
+  function transparencySlider(i) {
+    const sliderOuter = document.querySelector('.popup-transparency-slider-wrap'),
+          sliderInner = sliderOuter.querySelector('.popup-transparency-slider'),
+          transparencySlides = sliderOuter.querySelectorAll('.popup-transparency-slider__slide'),
+          currentSlide = sliderOuter.querySelector('.slider-counter-content__current'),
+          totalSlide = sliderOuter.querySelector('.slider-counter-content__total'),
+          transparencyLeft = document.getElementById('transparency_left'),
+          transparencyRight = document.getElementById('transparency_right'),
+          slideWidthPx = window.getComputedStyle(sliderOuter).width,
+          slideWidth = slideWidthPx.slice(0, slideWidthPx.length - 2);
+
+          let indexCount = i;
+          let offset = slideWidth * i;
+
+    sliderInner.style.transform = `translateX(-${offset}px)`;
+
+    currentSlide.textContent = indexCount + 1;
+    totalSlide.textContent = transparencySlides.length;
+
+    sliderInner.style.width = 100 * transparencySlides.length + '%';
+    sliderInner.style.display = 'flex';
+    
+
+    transparencySlides.forEach(slide => {
+      slide.style.width = slideWidth;
+    });
+
+    
+
+    transparencyLeft.addEventListener('click', () => {
+      sliderInner.style.transition = 'transform 0.35s ease-in-out';
+      if (offset === 0) {
+        offset = slideWidth * (transparencySlides.length - 1) ;
+        indexCount = transparencySlides.length - 1;
+      } else {
+        offset -= +slideWidth;
+        indexCount--;
+      }
+      sliderInner.style.transform = `translateX(-${offset}px)`;
+      currentSlide.textContent = indexCount + 1;
+      sliderInner.ontransitionend = () =>  sliderInner.style.transition = '';
+    })
+
+    transparencyRight.addEventListener('click', () => {
+      sliderInner.style.transition = 'transform 0.35s ease-in-out';
+      if (offset === slideWidth * (transparencySlides.length - 1)) {
+        offset = 0;
+        indexCount = 0;
+      } else {
+        offset += +slideWidth;
+        indexCount++;
+      }      
+      sliderInner.style.transform = `translateX(-${offset}px)`;
+      currentSlide.textContent = indexCount + 1;
+      sliderInner.ontransitionend = () =>  sliderInner.style.transition = '';
+      
+      
+    })
+  }
+
+
+  agreementRow.addEventListener('click', (e) => {
+    const target = e.target;
+    agreementDiv.forEach((item, index) => {
+      if (target && target === item) {
+        popupTransparency.style.visibility = 'visible';
+        noBodyJump();
+        document.addEventListener('click',closeHandler);
+        transparencySlider(index);
+      }
+    })
+  });
+ };
 
 
 
+  agreementFancybox();
   reviewsSlider();
   consultPopup();
   phoneAccordeon();
   sideMenu();
-  repaitTypesModal();
+  repairTypesModal();
   privacyPopup();
   tabs();
   accordeon();

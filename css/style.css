@@ -6224,6 +6224,8 @@ div.wave-block:nth-child(17):after {
 }
 .popup-transparency-slider-wrap {
   position: relative;
+  overflow: hidden;
+  width: 432px;
 }
 @media (max-width: 575px) {
   .popup-transparency-slider {
