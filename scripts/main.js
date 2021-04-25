@@ -317,15 +317,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     class SliderCarousel{
       constructor({main, wrap, next, prev, infinity = false, position = 0,
-         slidesToShow = 3, responsive = []}) {
+         slidesToShow = 3, responsive = [], styleId, slideClass}) {
         this.main = document.querySelector(main);
         this.wrap = document.querySelector(wrap);
-
-        if (!this.main || !this.wrap) {          
-          console.warn('slider-carousel: Необходимо 2 селектора, "main" и "wrapper"');          
+        if (!this.main || !this.wrap || !this.slideClass) {          
+          console.warn('slider-carousel: Необходимо 3 селектора, "main", "wrapper" и "slideClass"');          
         }
-
-        this.slides = document.querySelector(wrap).children;
+        this.slideClass = slideClass;
+        this.styleId = styleId;
+        this.slides = document.querySelector(wrap).children;  
+        console.log(this.slides);
         this.next = document.querySelector(next);
         this.prev = document.querySelector(prev);
         this.slidesToShow = slidesToShow;
@@ -336,12 +337,13 @@ document.addEventListener('DOMContentLoaded', () => {
           maxPosition: this.slides.length - this.slidesToShow,
         };
         this.responsive = responsive;
+        console.log(this.slides.length);
+        console.log(this.slidesToShow);
+        console.log(this.options.maxPosition);
 
         
       }
       init() {        
-        // console.log(this.prev);
-        // console.log(this.next);
         this.addGloClass();
         this.addStyle();
 
@@ -362,15 +364,15 @@ document.addEventListener('DOMContentLoaded', () => {
         this.main.classList.add('custom-slider');
         this.wrap.classList.add('custom-slider__wrap');
         for (const item of this.slides) {
-          item.classList.add('custom-slider__item');
+          item.classList.add(this.slideClass);
         }
       }
 
       addStyle() {
-        let style = document.getElementById('sliderCarousel-style');
+        let style = document.getElementById(this.styleId);
         if(!style){
         style = document.createElement('style');
-        style.id = 'sliderCarousel-style';
+        style.id = this.styleId;
         }
 
         style.textContent = `
@@ -379,10 +381,11 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         .custom-slider__wrap {
           display: flex !important;
+          flex-wrap: nowrap;
           transition: transform 0.5s !important;
           will-change: trasform !important;
         }
-        .custom-slider__item {
+        ${'.' + this.slideClass} {
           flex: 0 0 ${this.options.widthSlide}% !important;
           margin: auto 0 !important;
           max-width: none;
@@ -397,6 +400,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       prevSlider() {
+        this.options.maxPosition = this.slides.length - this.slidesToShow;
         if (this.options.infinity || this.options.position > 0) {
           --this.options.position;
           console.log(this.options.position);
@@ -409,9 +413,11 @@ document.addEventListener('DOMContentLoaded', () => {
       }
       
       nextSlider() {
+        this.options.maxPosition = this.slides.length - this.slidesToShow;
         if (this.options.infinity || this.options.position < this.options.maxPosition) {
           ++this.options.position;
-        console.log(this.options.position);
+        // console.log(this.options.position);
+        // console.log(this.options.maxPosition);
         if (this.options.position > this.options.maxPosition) {
           this.options.position = 0;
         }
@@ -459,6 +465,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if(widthWindow < maxResponse) {
             for (let i = 0; i < allResponse.length; i++){
               if (widthWindow < allResponse[i]) {
+
                 this.slidesToShow = this.responsive[i].slideToShow;
                 this.options.widthSlide = Math.floor(100 / this.slidesToShow );
                 this.addStyle();
@@ -485,6 +492,8 @@ document.addEventListener('DOMContentLoaded', () => {
     wrap: '.partners-slider',
     prev: '.partners .slider-arrow_left',
     next: '.partners .slider-arrow_right',
+    styleId: 'sliderCarousel-style',
+    slideClass: 'partners-item',
     slidesToShow: 4,
     infinity: true,
     responsive: [
@@ -503,7 +512,29 @@ document.addEventListener('DOMContentLoaded', () => {
     ]
    });
 
+   const transparency = new SliderCarousel({
+    main: '.transparency-slider-wrap',
+    wrap: '.transparency-slider.row',
+    prev: '#transparency-arrow_left',
+    next: '#transparency-arrow_right',
+    styleId: 'transparencyCarousel-style',
+    slideClass: 'transpar-item',
+    slidesToShow: 3,
+    infinity: true,
+    responsive: [      
+      {
+        breakpoint: 1024,
+        slideToShow: 2
+      },
+      {
+        breakpoint: 576,
+        slideToShow: 1
+      },
+    ]
+   });
+
    carousel.init();
+   transparency.init();
    
  };
 
@@ -527,6 +558,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
           let indexCount = i;
           let offset = slideWidth * i;
+
 
     sliderInner.style.transform = `translateX(-${offset}px)`;
 
