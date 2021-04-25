@@ -313,7 +313,203 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
- 
+ const carouselSlider = () => {
+
+    class SliderCarousel{
+      constructor({main, wrap, next, prev, infinity = false, position = 0,
+         slidesToShow = 3, responsive = []}) {
+        if (!this.main || !this.wrap) {
+          console.warn('slider-carousel: Необходимо 2 селектора, "main" и "wrapper"');
+        }
+        this.main = document.querySelector(main);
+        this.wrap = document.querySelector(wrap);
+        this.slides = document.querySelector(wrap).children;
+        this.next = document.querySelector(next);
+        this.prev = document.querySelector(prev);
+        this.slidesToShow = slidesToShow;
+        this.options = {
+          position,
+          infinity,
+          widthSlide: Math.floor(100 / this.slidesToShow),
+          maxPosition: this.slides.length - this.slidesToShow,
+        };
+        this.responsive = responsive;
+
+        
+      }
+
+      init() {
+        
+        console.log(this.prev);
+        console.log(this.next);
+        this.addGloClass();
+        this.addStyle();
+
+        if (this.prev && this.next) {
+          this.controlSlider();
+        } else {
+          
+          this.addArrow();
+          this.controlSlider();
+        }
+
+        if (this.responsive){
+          this.responseInit();
+        }
+      }
+
+      addGloClass() {
+        this.main.classList.add('custom-slider');
+        this.wrap.classList.add('custom-slider__wrap');
+        for (const item of this.slides) {
+          item.classList.add('custom-slider__item');
+        }
+      }
+
+      addStyle() {
+        let style = document.getElementById('sliderCarousel-style');
+        console.log(style);
+        if(!style){
+        style = document.createElement('style');
+        style.id = 'sliderCarousel-style';
+        }
+
+        style.textContent = `
+        .custom-slider{
+          overflow: hidden !important;
+        }
+        .custom-slider__wrap {
+          display: flex !important;
+          transition: transform 0.5s !important;
+          will-change: trasform !important;
+        }
+        .custom-slider__item {
+          flex: 0 0 ${this.options.widthSlide}% !important;
+          margin: auto 0 !important;
+          max-width: none;
+        }
+        `;
+        document.head.append(style);
+      }
+
+      controlSlider() {
+        this.prev.addEventListener('click', this.prevSlider.bind(this));
+        this.next.addEventListener('click', this.nextSlider.bind(this));
+      }
+
+      prevSlider() {
+        if (this.options.infinity || this.options.position > 0) {
+          --this.options.position;
+          console.log(this.options.position);
+          if (this.options.position < 0 ) {
+            this.options.position = this.options.maxPosition;
+          }
+          this.wrap.style.transform = `translateX(-${this.options.position * this.options.widthSlide}%)`;
+        }
+       
+      }
+      
+      nextSlider() {
+        if (this.options.infinity || this.options.position < this.options.maxPosition) {
+          ++this.options.position;
+        console.log(this.options.position);
+        if (this.options.position > this.options.maxPosition) {
+          this.options.position = 0;
+        }
+        this.wrap.style.transform = `translateX(-${this.options.position * this.options.widthSlide}%)`;
+        };
+      }
+
+
+      addArrow() {
+        this.prev = document.createElement('button');
+        this.next = document.createElement('button');
+
+        this.prev.className = 'slider__prev-btn';
+        this.next.className = 'slider__next-btn';
+
+        this.main.append(this.prev);
+        this.main.append(this.next);
+
+        const style = document.createElement('style');
+        style.textContent = `
+        .slider__prev-btn,
+        .slider__next-btn {
+          margin: 0 10px;
+          border: 20px solid transparent;
+          background: transparent;
+        }
+        .slider__prev-btn {
+          border-right-color: #c7b59e;
+        }
+        .slider__next-btn {
+          border-left-color: #c7b59e;
+        }
+        
+        `;
+        document.head.append(style);
+      }
+
+      responseInit(){
+        const slidesToShowDefault = this.slidesToShow;
+        const allResponse = this.responsive.map(item => item.breakpoint);
+        const maxResponse = Math.max(...allResponse);
+        console.log(maxResponse);
+
+        const checkResponse = () => {
+          const widthWindow = document.documentElement.clientWidth;
+          if(widthWindow < maxResponse) {
+            for (let i = 0; i < allResponse.length; i++){
+              if (widthWindow < allResponse[i]) {
+                this.slidesToShow = this.responsive[i].slideToShow;
+                this.options.widthSlide = Math.floor(100 / this.slidesToShow );
+                this.addStyle();
+              }
+              
+            }
+          } else {
+            this.slidesToShow = slidesToShowDefault;
+            this.options.widthSlide = Math.floor(100 / this.slidesToShow );
+            this.addStyle();
+          }
+        };
+
+        checkResponse();
+
+        window.addEventListener('resize', checkResponse);
+      }
+
+
+    }
+
+   const carousel = new SliderCarousel({
+    main: '.partners .wrapper',
+    wrap: '.partners-slider',
+    prev: '.partners .slider-arrow_left',
+    next: '.partners .slider-arrow_right',
+    slidesToShow: 4,
+    infinity: true,
+    responsive: [
+      {
+        breakpoint: 1024,
+        slideToShow: 3
+      },
+      {
+        breakpoint: 768,
+        slideToShow: 2
+      },
+      {
+        breakpoint: 576,
+        slideToShow: 1
+      },
+    ]
+   });
+
+   carousel.init();
+   
+ };
+
+
 
 
   reviewsSlider();
@@ -326,5 +522,6 @@ document.addEventListener('DOMContentLoaded', () => {
   accordeon();
   phoneValidation();
   formSend();
+  carouselSlider();
 
 });

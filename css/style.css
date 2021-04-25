@@ -4469,6 +4469,7 @@ div.wave-block:nth-child(17):after {
   }
 }
 .partners-slider {
+  display: flex;
   margin-top: 83px;
   -webkit-transition: 1s;
   transition: 1s;
