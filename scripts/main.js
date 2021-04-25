@@ -326,7 +326,6 @@ document.addEventListener('DOMContentLoaded', () => {
         this.slideClass = slideClass;
         this.styleId = styleId;
         this.slides = document.querySelector(wrap).children;  
-        console.log(this.slides);
         this.next = document.querySelector(next);
         this.prev = document.querySelector(prev);
         this.slidesToShow = slidesToShow;
@@ -337,9 +336,6 @@ document.addEventListener('DOMContentLoaded', () => {
           maxPosition: this.slides.length - this.slidesToShow,
         };
         this.responsive = responsive;
-        console.log(this.slides.length);
-        console.log(this.slidesToShow);
-        console.log(this.options.maxPosition);
 
         
       }
@@ -403,7 +399,6 @@ document.addEventListener('DOMContentLoaded', () => {
         this.options.maxPosition = this.slides.length - this.slidesToShow;
         if (this.options.infinity || this.options.position > 0) {
           --this.options.position;
-          console.log(this.options.position);
           if (this.options.position < 0 ) {
             this.options.position = this.options.maxPosition;
           }
@@ -620,8 +615,67 @@ document.addEventListener('DOMContentLoaded', () => {
   });
  };
 
+ const formulaTitles = () => {
+  const formulaItems = document.querySelectorAll('.formula-item'),
+        formulaWrapper = document.querySelector('.formula .wrapper_small');
+        
+        formulaWrapper.onmouseover =  (e) => {
+          const target = e.target;
+          if(target.closest('.formula-item')) {
+            const parent = target.closest('.formula-item');
+            const hint = parent.querySelector('.formula-item-popup');            
+
+            if (hint.getBoundingClientRect().top <= 0) {
+              const text = parent.querySelector('.formula-item__descr').clientHeight;
+              parent.style.cssText = `
+              z-index: 2;
+              `;
+              hint.classList.add('rotate');
+              hint.style.top = `calc(105% + ${text}px)`;
+              hint.style.paddingTop = 40 + 'px';
+            } else {
+              hint.style = '';
+              hint.classList.remove('rotate');
+            }
+
+            hint.style.visibility = 'visible';
+            hint.style.opacity = 1;
+            
+          }
+          
+        }
+        
+        formulaWrapper.onmouseout =  (e) => {
+          const target = e.target;
+          if(target.closest('.formula-item')) {
+            const parent = target.closest('.formula-item');
+            const hint = parent.querySelector('.formula-item-popup');
+            hint.style = '';
+            parent.style = '';
+          }
+          
+        }
 
 
+
+  // formulaItems.forEach((item) => {
+  //   item.addEventListener('mouseover', () => {
+  //     const hint = item.querySelector('.formula-item-popup');
+  //     hint.style.visibility = 'visible';
+  //     hint.style.opacity = 1;
+  //   })
+
+  //   item.addEventListener('mouseout', () => {
+  //     const hint = item.querySelector('.formula-item-popup');
+  //     hint.style.visibility = '';
+  //     hint.style.opacity = '';
+  //   })
+
+  // });
+ };
+
+
+  formulaTitles();
   agreementFancybox();
   reviewsSlider();
   consultPopup();

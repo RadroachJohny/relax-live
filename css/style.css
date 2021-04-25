@@ -1146,7 +1146,7 @@ template,
   font-weight: 300;
   text-align: center;
   color: #000000;
-  z-index: 0;
+  z-index: 1;
 }
 .formula-item strong {
   font-weight: 500;
@@ -1239,6 +1239,19 @@ template,
   -webkit-transform: translate3d(0, -5px, 0);
   transform: translate3d(0, -5px, 0);
   opacity: 0.1;
+  z-index: 1000;
+}
+.formula-item-popup.rotate::before {
+  transform: rotate(180deg);
+  
+} 
+.formula-item-popup > div {
+  position: relative;
+  z-index: 5;
+}
+.formula-item-popup.rotate > div {
+  position: relative;
+  z-index: 5;
 }
 .formula-item-popup p {
   padding-bottom: 15px;
@@ -1286,9 +1299,9 @@ template,
   width: 100%;
   height: 100%;
   content: "";
-  background: url("../images/formula/item_popup_1.svg") no-repeat;
+  background: #ffffff url("../images/formula/item_popup_1.svg") no-repeat;
   background-size: contain;
-  z-index: -1;
+  z-index: 1;
 }
 .formula-item-popup-02 {
   min-height: 191px;
@@ -1307,7 +1320,7 @@ template,
   content: "";
   background: url("../images/formula/item_popup_2.svg") no-repeat;
   background-size: contain;
-  z-index: -1;
+  z-index: 1;
 }
 @media (max-width: 575px) {
   .formula-item-popup-02:before {
@@ -1332,7 +1345,7 @@ template,
   content: "";
   background: url("../images/formula/item_popup_3.svg") no-repeat;
   background-size: contain;
-  z-index: -1;
+  z-index: 1;
 }
 .formula-item-popup-04 {
   min-height: 171px;
@@ -1351,7 +1364,7 @@ template,
   content: "";
   background: url("../images/formula/item_popup_4.svg") no-repeat;
   background-size: contain;
-  z-index: -1;
+  z-index: 1;
 }
 .formula-item-popup-05 {
   min-height: 237px;
@@ -1371,7 +1384,7 @@ template,
   content: "";
   background: url("../images/formula/item_popup_5.svg") no-repeat;
   background-size: contain;
-  z-index: -1;
+  z-index: 1;
 }
 .formula-item-popup-06 {
   min-height: 183px;
@@ -1393,7 +1406,7 @@ template,
   content: "";
   background: url("../images/formula/item_popup_6.svg") no-repeat;
   background-size: contain;
-  z-index: -1;
+  z-index: 1;
 }
 @media (max-width: 575px) {
   .formula-item-popup-06:before {
