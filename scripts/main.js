@@ -528,6 +528,27 @@ document.addEventListener('DOMContentLoaded', () => {
     ]
    });
 
+   const formula = new SliderCarousel({
+    main: '.transparency-slider-wrap',
+    wrap: '.transparency-slider.row',
+    prev: '#transparency-arrow_left',
+    next: '#transparency-arrow_right',
+    styleId: 'transparencyCarousel-style',
+    slideClass: 'transpar-item',
+    slidesToShow: 3,
+    infinity: true,
+    responsive: [      
+      {
+        breakpoint: 1024,
+        slideToShow: 2
+      },
+      {
+        breakpoint: 576,
+        slideToShow: 1
+      },
+    ]
+   });
+
    carousel.init();
    transparency.init();
    
@@ -595,8 +616,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }      
       sliderInner.style.transform = `translateX(-${offset}px)`;
       currentSlide.textContent = indexCount + 1;
-      sliderInner.ontransitionend = () =>  sliderInner.style.transition = '';
-      
+      sliderInner.ontransitionend = () =>  sliderInner.style.transition = '';     
       
     })
   }
@@ -615,18 +635,18 @@ document.addEventListener('DOMContentLoaded', () => {
   });
  };
 
- const formulaTitles = () => {
-  const formulaItems = document.querySelectorAll('.formula-item'),
-        formulaWrapper = document.querySelector('.formula .wrapper_small');
+ const formulaTitles = (mainWrapper, triggerItem, bubble, itemText) => {
+  const formulaWrapper = document.querySelector(mainWrapper);
         
         formulaWrapper.onmouseover =  (e) => {
           const target = e.target;
-          if(target.closest('.formula-item')) {
-            const parent = target.closest('.formula-item');
-            const hint = parent.querySelector('.formula-item-popup');            
+          if(target.closest(triggerItem)) {
+            const parent = target.closest(triggerItem);
+            const hint = parent.querySelector(bubble);   
 
-            if (hint.getBoundingClientRect().top <= 0) {
-              const text = parent.querySelector('.formula-item__descr').clientHeight;
+            if (hint.getBoundingClientRect().top <= 0) {     
+              console.log(hint.getBoundingClientRect().top);         
+              const text = parent.querySelector(itemText).clientHeight;
               parent.style.cssText = `
               z-index: 2;
               `;
@@ -647,9 +667,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         formulaWrapper.onmouseout =  (e) => {
           const target = e.target;
-          if(target.closest('.formula-item')) {
-            const parent = target.closest('.formula-item');
-            const hint = parent.querySelector('.formula-item-popup');
+          if(target.closest(triggerItem)) {
+            const parent = target.closest(triggerItem);
+            const hint = parent.querySelector(bubble);
             hint.style = '';
             parent.style = '';
           }
@@ -658,24 +678,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-  // formulaItems.forEach((item) => {
-  //   item.addEventListener('mouseover', () => {
-  //     const hint = item.querySelector('.formula-item-popup');
-  //     hint.style.visibility = 'visible';
-  //     hint.style.opacity = 1;
-  //   })
 
-  //   item.addEventListener('mouseout', () => {
-  //     const hint = item.querySelector('.formula-item-popup');
-  //     hint.style.visibility = '';
-  //     hint.style.opacity = '';
-  //   })
-
-  // });
  };
 
 
-  formulaTitles();
+  formulaTitles('.formula .wrapper_small', '.formula-item', '.formula-item-popup', '.formula-item__descr');
+  formulaTitles('.problems .wrapper_middle', '.problems-item', '.problems-item-popup', '.problems-item__descr');
   agreementFancybox();
   reviewsSlider();
   consultPopup();

@@ -1240,10 +1240,24 @@ template,
   transform: translate3d(0, -5px, 0);
   opacity: 0.1;
   z-index: 1000;
+  transition: opacity 0.5s ease; 
 }
+.formula-item-popup::before {
+  transition: opacity 0.5s ease; 
+} 
 .formula-item-popup.rotate::before {
-  transform: rotate(180deg);
-  
+  transform: rotate(180deg);  
+  transition: opacity 0.5s ease; 
+} 
+.formula-item-popup.rotate {
+  transition: opacity 0.5s ease; 
+} 
+.problems-item-popup.rotate::before {
+  transform: rotate(180deg);  
+  transition: opacity 0.5s ease; 
+} 
+.problems-item-popup.rotate {
+  transition: opacity 0.5s ease; 
 } 
 .formula-item-popup > div {
   position: relative;
@@ -2823,11 +2837,11 @@ div.wave-block:nth-child(17):after {
 .problems-item-popup-1 {
   min-height: 344px;
   padding-top: 35px;
-  top: 245px;
+  /* top: 245px; */
 }
 @media (min-width: 1025px) {
   .problems-item-popup-1 {
-    top: 140px;
+    /* top: 140px; */
   }
 }
 @media (max-width: 575px) {
@@ -2844,8 +2858,8 @@ div.wave-block:nth-child(17):after {
   content: "";
   background: url("../images/problems/popup_bg_1.svg") no-repeat;
   background-size: contain;
-  -webkit-transform: rotate(180deg);
-  transform: rotate(180deg);
+  /* -webkit-transform: rotate(180deg); */
+  /* transform: rotate(180deg); */
   z-index: -1;
 }
 @media (max-width: 575px) {
