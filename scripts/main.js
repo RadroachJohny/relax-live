@@ -37,9 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     popupTrigger.forEach(trigger => {
       trigger.addEventListener('click', (e) => {
-        console.log('clicking');
         if (trigger.closest('.popup-dialog-menu')) {
-          console.log('menu');
           document.querySelector('.popup-dialog-menu').classList.remove('active');
           popupModal.style.visibility = 'visible';
           noBodyJump();
@@ -48,8 +46,111 @@ document.addEventListener('DOMContentLoaded', () => {
         popupModal.style.visibility = 'visible';
         noBodyJump();
         document.addEventListener('click',closeHandler);
+
+        repairTypesGenerateData();
       });
     });
+  };
+
+  const repairTypesGenerateData = () => {
+    let getData = async (url) => {
+      let res = await fetch(url);
+
+      if (!res.status) {
+        throw new Error(`Ошибка ${res.status}. Получение данных прошло с ошибкой. Попробуйте позже.`);
+      }
+      return await res.json();
+    };
+
+    getData('db/db.json')
+    .then(res => renderElems(res));
+
+    function renderElems(res) {
+      console.log(res);
+      const navList = document.querySelector('.nav-list-popup-repair'),
+            typesTitle = document.getElementById('switch-inner'),
+            tableContainer = document.querySelector('.popup-repair-types-content-table');
+
+      document.querySelector('.popup-repair-types-content__head-date').textContent = res[0].date;
+
+      function tabTrigger(e) {
+        const target = e.target;
+        if (target.tagName === 'BUTTON') {
+          const btns = navList.querySelectorAll('button');
+          btns.forEach((btn, index) => {
+            if (btn === target) {
+              typesTitle.textContent = btn.textContent;
+              tableSorting(index);
+            }
+          })
+        }
+      }
+
+      function tableSorting(i = 0) {
+        table = document.querySelectorAll('.popup-repair-types-content-table__list');
+        table.forEach(tableOne => {
+          tableOne.style.display = 'none';
+          table[i].style.display = 'block';
+        })
+      }
+
+      function renderNav() {
+        res.forEach(elem => {
+          if(elem.title) {
+            const navBtn = document.createElement('button');
+            navBtn.classList.add('button_o', 'popup-repair-types-nav__item');
+            navBtn.textContent = elem.title;
+
+            navList.append(navBtn);
+          }
+        })
+
+        navList.addEventListener('click', tabTrigger);
+
+      }
+
+      function checkUnits(unit) {
+        if (unit === 'м2') {
+          console.log(123123);
+          return unit.slice(0,1) + '<sup>' + unit.slice(1, unit.length) + '</sup>';
+        } else {
+          return unit;
+        }
+      }
+
+      function renderTable() {
+        res.forEach(elem => {
+          if(elem.title) {
+            const table = document.createElement('table'),
+                  tbody = document.createElement('tbody');
+            table.classList.add('popup-repair-types-content-table__list');
+
+            elem.priceList.forEach(tableItem => {
+              const tableRow = document.createElement('tr');
+              tableRow.classList.add('mobile-row');
+              tableRow.innerHTML = `
+              <td class="repair-types-name">${tableItem.typeService}</td>
+              <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
+              <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
+              <td class="repair-types-value">${checkUnits(tableItem.units)}</td>
+              <td class="repair-types-value">${tableItem.cost} руб.</td>
+              `;
+
+              tbody.append(tableRow);
+
+            })
+
+            table.append(tbody);
+            tableContainer.append(table);
+
+            tableSorting();
+          }
+        });
+      }
+
+      renderTable();
+      renderNav();
+    }
   };
 
   const accordeon = () => {
