@@ -271,16 +271,17 @@ document.addEventListener('DOMContentLoaded', () => {
     })
   };
 
-  const reviewsSlider = () => {
-    const sliderWrap = document.querySelector('.reviews-slider-wrap'),
-          sliderContainer = sliderWrap.querySelector('.reviews-slider'),
-          sliderOuter = sliderWrap.querySelector('.reviews-slider__outer'),
-          slides = sliderWrap.querySelectorAll('.reviews-slider__slide'),
-          arrowLeft = document.getElementById('reviews-arrow_left'),
-          arrowRight = document.getElementById('reviews-arrow_right');
+  const reviewsSlider = (wrap, container, outer, slideClass, left, right, active) => {
+    const sliderWrap = document.querySelector(wrap),
+          sliderContainer = sliderWrap.querySelector(container),
+          sliderOuter = sliderWrap.querySelector(outer),
+          slides = sliderWrap.querySelectorAll(slideClass),
+          arrowLeft = document.getElementById(left),
+          arrowRight = document.getElementById(right);
 
+    let counter = 0;
     let offset = 0;
-    let width = window.getComputedStyle(sliderWrap).width;
+    let width = window.getComputedStyle(sliderContainer).width;
 
     sliderOuter.style.overflow = 'hidden';
 
@@ -292,37 +293,65 @@ document.addEventListener('DOMContentLoaded', () => {
       slide.style.width = width;
     });
 
+    if(active) {
+      activeClassToggle();
+    }
+
     arrowRight.addEventListener('click', () => {
       if (offset === +width.slice(0, width.length - 2) * (slides.length -1)) {
         offset = 0;
+        counter = 0;
       } else {
         offset += +width.slice(0, width.length - 2);
+        counter++;
       }
       
+      if (active) {
+        sliderContainer.ontransitionend = () => {
+          activeClassToggle();
+        };
+      }
+
       sliderContainer.style.transform = `translateX(${-offset}px)`;
     });
-
+    
     arrowLeft.addEventListener('click', () => {
       if (offset == 0 ) {
         offset = +width.slice(0, width.length - 2) * (slides.length -1);
+        counter = slides.length -1;
       } else {
         offset -= +width.slice(0, width.length - 2);
+        counter--;
       }
 
+      if (active) {
+        sliderContainer.ontransitionend = () => {
+          activeClassToggle();
+        }
+      }
       sliderContainer.style.transform = `translateX(${-offset}px)`;
     });
+
+    function activeClassToggle() {
+      slides.forEach(element => {
+        element.classList.remove(active);
+      });
+      slides[counter].classList.add(active);
+    }
   };
 
  const carouselSlider = () => {
 
     class SliderCarousel{
       constructor({main, wrap, next, prev, infinity = false, position = 0,
-         slidesToShow = 3, responsive = [], styleId, slideClass}) {
+         slidesToShow = 3, responsive = [], styleId, slideClass, overflow = true}) {
         this.main = document.querySelector(main);
         this.wrap = document.querySelector(wrap);
         if (!this.main || !this.wrap || !this.slideClass) {          
           console.warn('slider-carousel: Необходимо 3 селектора, "main", "wrapper" и "slideClass"');          
         }
+        this.overflow = overflow;
+        this.slideClass = main;
         this.slideClass = slideClass;
         this.styleId = styleId;
         this.slides = document.querySelector(wrap).children;  
@@ -357,8 +386,8 @@ document.addEventListener('DOMContentLoaded', () => {
       }
 
       addGloClass() {
-        this.main.classList.add('custom-slider');
-        this.wrap.classList.add('custom-slider__wrap');
+        this.main.classList.add(`${this.slideClass}-slider`);
+        this.wrap.classList.add(`${this.slideClass}-slider__wrap`);
         for (const item of this.slides) {
           item.classList.add(this.slideClass);
         }
@@ -372,10 +401,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         style.textContent = `
-        .custom-slider{
-          overflow: hidden !important;
+        .${this.slideClass}-slider{
+          ${this.overflow ? 'overflow: hidden !important' : ''}
         }
-        .custom-slider__wrap {
+        .${this.slideClass}-slider__wrap {
           display: flex !important;
           flex-wrap: nowrap;
           transition: transform 0.5s !important;
@@ -529,18 +558,23 @@ document.addEventListener('DOMContentLoaded', () => {
    });
 
    const formula = new SliderCarousel({
-    main: '.transparency-slider-wrap',
-    wrap: '.transparency-slider.row',
-    prev: '#transparency-arrow_left',
-    next: '#transparency-arrow_right',
-    styleId: 'transparencyCarousel-style',
-    slideClass: 'transpar-item',
+    main: '.desktop-hide .formula-slider-wrap',
+    wrap: '.desktop-hide .formula-slider',
+    prev: '#formula-arrow_left',
+    next: '#formula-arrow_right',
+    styleId: 'formulaCarousel-style',
+    slideClass: 'formula-slide-item',
     slidesToShow: 3,
     infinity: true,
+    overflow: false,
     responsive: [      
       {
         breakpoint: 1024,
-        slideToShow: 2
+        slideToShow: 3
+      },
+      {
+        breakpoint: 768,
+        slideToShow: 1
       },
       {
         breakpoint: 576,
@@ -551,6 +585,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
    carousel.init();
    transparency.init();
+   formula.init();
    
  };
 
@@ -644,8 +679,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const parent = target.closest(triggerItem);
             const hint = parent.querySelector(bubble);   
 
+            if (parent.classList.contains('formula-item') && parent.closest('.desktop-hide')) {
+              parent.style.opacity = 1;
+              parent.querySelector('.formula-item__icon-inner').style.background = 'linear-gradient(90deg, #f48922 0%, #ffb015 100%)';
+            }
+
             if (hint.getBoundingClientRect().top <= 0) {     
-              console.log(hint.getBoundingClientRect().top);         
               const text = parent.querySelector(itemText).clientHeight;
               parent.style.cssText = `
               z-index: 2;
@@ -658,11 +697,22 @@ document.addEventListener('DOMContentLoaded', () => {
               hint.classList.remove('rotate');
             }
 
-            hint.style.visibility = 'visible';
-            hint.style.opacity = 1;
+            if (hint.getBoundingClientRect().left <=0) {
+              console.log(hint.getBoundingClientRect().left);
+              hint.style.transform = `translateX(${Math.abs(Math.floor(hint.getBoundingClientRect().left))}px)`;
             
-          }
+            } else if (hint.getBoundingClientRect().left + hint.clientWidth > window.innerWidth) {
+              console.log(324234);
+              let distance = window.innerWidth - hint.getBoundingClientRect().left;
+              let rest = hint.clientWidth - distance;
+              hint.style.transform = `translateX(-${rest}px)`;
+            }
+          hint.style.visibility = 'visible';
+          hint.style.opacity = 1;
           
+          
+          
+          };
         }
         
         formulaWrapper.onmouseout =  (e) => {
@@ -683,9 +733,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
   formulaTitles('.formula .wrapper_small', '.formula-item', '.formula-item-popup', '.formula-item__descr');
+  formulaTitles('.formula .desktop-hide .formula-slider', '.desktop-hide .formula-item', '.desktop-hide .formula-item-popup', '.desktop-hide .formula-item__descr');
   formulaTitles('.problems .wrapper_middle', '.problems-item', '.problems-item-popup', '.problems-item__descr');
+  reviewsSlider('.reviews-slider-wrap', '.reviews-slider', '.reviews-slider__outer', '.reviews-slider__slide', 'reviews-arrow_left', 'reviews-arrow_right');
+  reviewsSlider('.problems .wrapper_small',  '.problems-slider', '.problems-slider-wrap','.problems-slider__slide', 'problems-arrow_left', 'problems-arrow_right', 'active-item');
   agreementFancybox();
-  reviewsSlider();
   consultPopup();
   phoneAccordeon();
   sideMenu();
