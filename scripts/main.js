@@ -1,8 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
 
   const phoneAccordeon = () => {
-    slideTrigger = document.querySelector('.header-contacts__arrow'),
-    phoneSliderBlock = document.querySelector('.header-contacts__phone-number-accord');
+   const slideTrigger = document.querySelector('.header-contacts__arrow'),
+         phoneSliderBlock = document.querySelector('.header-contacts__phone-number-accord');
 
     slideTrigger.addEventListener('click', (e) => {
       if (e.target.closest('.header-contacts__arrow')) {
@@ -24,7 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('less than 576px');
       }
       popupDialogMenu.classList.add('active');
-    })
+    });
 
     closeMenu.addEventListener('click', () => {
       popupDialogMenu.classList.remove('active');
@@ -82,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
               typesTitle.textContent = btn.textContent;
               tableSorting(index);
             }
-          })
+          });
         }
       }
 
@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
         table.forEach(tableOne => {
           tableOne.style.display = 'none';
           table[i].style.display = 'block';
-        })
+        });
       }
 
       function renderNav() {
@@ -103,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             navList.append(navBtn);
           }
-        })
+        });
 
         navList.addEventListener('click', tabTrigger);
 
@@ -111,7 +111,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       function checkUnits(unit) {
         if (unit === 'м2') {
-          console.log(123123);
           return unit.slice(0,1) + '<sup>' + unit.slice(1, unit.length) + '</sup>';
         } else {
           return unit;
@@ -138,7 +137,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
               tbody.append(tableRow);
 
-            })
+            });
 
             table.append(tbody);
             tableContainer.append(table);
@@ -168,17 +167,30 @@ document.addEventListener('DOMContentLoaded', () => {
                 title.classList.remove('msg-active');
               }
             });
-          })
+          });
            
   };
 
-  const tabs = () => {
-    const tabsContainer = document.querySelector('.scheme .nav-list'),
-          tabs = tabsContainer.querySelectorAll('.scheme-nav__item'),
-          slides = document.querySelectorAll('.scheme-slider__slide'),
-          slidesDescription = document.querySelectorAll('.scheme-description-block');
+  const typesSliderFirstInit = () => {
+    const allSliders = document.querySelectorAll('.temp-wrapper');
+            allSliders.forEach((slider, index) => {
+              slider.style.display = 'none';
+              if (index === 0) {
+                allSliders[index].style.display = 'flex';
+              }
+            });
+  };
 
+  const tabs = (container, tabsBtn, allSlides, description, changeSlider) => {
+    const tabsContainer = document.querySelector(container),
+          tabs = tabsContainer.querySelectorAll(tabsBtn);
+
+        
+   
     function changeTab(tabIndex) {
+      const slides = document.querySelectorAll(allSlides),
+            slidesDescription = document.querySelectorAll(description);
+
       for (let i = 0; i < tabs.length; i++) {
         slides[i].style.display = 'none';
         slidesDescription[i].classList.remove('visible-content-block');
@@ -193,13 +205,25 @@ document.addEventListener('DOMContentLoaded', () => {
       tabs.forEach((tab, tabIndex) => {
         if (target === tab) {
           tab.classList.add('active');
-          changeTab(tabIndex);
+          if (changeSlider) {
+            const allSliders = document.querySelectorAll('.temp-wrapper');
+            allSliders.forEach((slider, index) => {
+              slider.style.display = 'none';
+              if (index === tabIndex) {
+                allSliders[index].style.display = 'flex';
+              }
+            });
+          }
+
+          if (allSlides && description) {
+            changeTab(tabIndex);      
+          }
         } else {
           tab.classList.remove('active');
         }
-      })
-    })
-  };
+      });
+    });
+  };  
 
   const noBodyJump = () => {
     const block = document.createElement('div');
@@ -236,7 +260,7 @@ document.addEventListener('DOMContentLoaded', () => {
         noBodyJump();
         document.addEventListener('click',closeHandler);
       });
-    })
+    });
 
   };
 
@@ -281,7 +305,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
           if (i != -1) {
               i < 5 && (i = 3);
-              newValue = newValue.slice(0, i)
+              newValue = newValue.slice(0, i);
           }
   
           let reg = matrix.substr(0, input.value.length).replace(/_+/g,
@@ -317,14 +341,14 @@ document.addEventListener('DOMContentLoaded', () => {
         'Content-Type': 'application/json'
       },
         body: JSON.stringify(data),
-      })
+      });
 
       if (!res.ok) {
         throw new Error(`Ошибка ${res.status}. Ой, что-то пошло не так. Пожалуйста попробуйсте снова отправить письмо немного позже.`);
       }
  
       return await res.text();
-    }
+    };
     
     forms.forEach(form => {
 
@@ -355,7 +379,7 @@ document.addEventListener('DOMContentLoaded', () => {
           .finally(() => {
             form.reset();
             policyCheckbox.checked = false;
-          })
+          });
       });
     });
   };
@@ -369,7 +393,7 @@ document.addEventListener('DOMContentLoaded', () => {
         noBodyJump();
         document.addEventListener('click',closeHandler);
       });
-    })
+    });
   };
 
   const reviewsSlider = (wrap, container, outer, slideClass, left, right, active) => {
@@ -428,7 +452,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (active) {
         sliderContainer.ontransitionend = () => {
           activeClassToggle();
-        }
+        };
       }
       sliderContainer.style.transform = `translateX(${-offset}px)`;
     });
@@ -575,7 +599,6 @@ document.addEventListener('DOMContentLoaded', () => {
         if (this.options.position > this.options.maxPosition) {
           this.options.position = 0;
         }
-        console.log(this.options.position);
         this.wrap.style.transform = `translateX(-${this.options.position * this.options.widthSlide}%)`;
 
         if (this.current && this.total) {
@@ -583,15 +606,15 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         // Check to toggle arrows
         if(this.hideArrows){
-        if ((this.options.position + 1) > this.options.maxPosition) {
-          this.next.style.visibility = 'hidden';
-        } else if (this.options.position > 0){
-          this.prev.style.visibility = 'visible';
-        }
+          if ((this.options.position + 1) > this.options.maxPosition) {
+            this.next.style.visibility = 'hidden';
+          } else if (this.options.position > 0){
+            this.prev.style.visibility = 'visible';
+          }
         }
         
 
-        };
+        }
       }
 
 
@@ -771,9 +794,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const wrapper = document.querySelector(wrap),
           portfolioSlides = wrapper.querySelectorAll(slides);
 
-          console.log(wrap);
-          console.log(portfolioSlides);
-
     wrapper.addEventListener('click', (e) => {
       console.log(wrap);
       console.log(portfolioSlides);
@@ -796,7 +816,7 @@ document.addEventListener('DOMContentLoaded', () => {
             portfolioPopup(indexSlide);
 
           }
-        })
+        });
       }
     });
 
@@ -819,7 +839,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // transparencySlider(index);
         transparencySlider('.popup-transparency-slider-wrap', '.popup-transparency-slider', '.popup-transparency-slider__slide', '.slider-counter-content__current', '.slider-counter-content__total', 'transparency_left', 'transparency_right', index);
       }
-    })
+    });
   });
  };
 
@@ -833,11 +853,13 @@ document.addEventListener('DOMContentLoaded', () => {
       menu.style.display = 'none';
 
     }
-  })
+  });
 
- }
+ };
 
  const  transparencySlider = (outer, inner, slides, current, total, left, right, i = 0, mobile = false, sideMenu = false) => {
+   console.log(outer);
+   console.log(inner);
   const sliderOuter = document.querySelector(outer),
         sliderInner = sliderOuter.querySelector(inner),
         transparencySlides = sliderInner.querySelectorAll(slides),
@@ -849,7 +871,7 @@ document.addEventListener('DOMContentLoaded', () => {
         slideWidth = slideWidthPx.slice(0, slideWidthPx.length - 2);
 
 
-
+  console.log(current);
         let indexCount = i;
         let offset = slideWidth * i;
 
@@ -880,6 +902,7 @@ document.addEventListener('DOMContentLoaded', () => {
   
 
   transparencyLeft.addEventListener('click', () => {
+    console.log('click');
     sliderInner.style.transition = 'transform 0.35s ease-in-out';
     if (offset === 0) {
       offset = slideWidth * (transparencySlides.length - 1) ;
@@ -895,7 +918,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (sideMenu) {
     sideMenuToggle(sideMenu, indexCount);
   }
-  })
+  });
 
   transparencyRight.addEventListener('click', () => {
     sliderInner.style.transition = 'transform 0.35s ease-in-out';
@@ -914,8 +937,8 @@ document.addEventListener('DOMContentLoaded', () => {
     sideMenuToggle(sideMenu, indexCount);
     }
     
-  })
-}
+  });
+};
 
  const formulaTitles = (mainWrapper, triggerItem, bubble, itemText) => {
   const formulaWrapper = document.querySelector(mainWrapper);
@@ -959,8 +982,8 @@ document.addEventListener('DOMContentLoaded', () => {
           
           
           
-          };
-        }
+          }
+        };
         
         formulaWrapper.onmouseout =  (e) => {
           const target = e.target;
@@ -971,7 +994,7 @@ document.addEventListener('DOMContentLoaded', () => {
             parent.style = '';
           }
           
-        }
+        };
 
 
 
@@ -982,7 +1005,7 @@ document.addEventListener('DOMContentLoaded', () => {
    let styles = document.head.querySelectorAll('style');
    styles.forEach(style => {
      style.remove();
-   })
+   });
  }
 
  window.addEventListener('resize', () => {
@@ -1000,7 +1023,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
      transparencySlider('.portfolio .wrapper_middle', '.portfolio-slider-mobile', '.portfolio-slider__slide-frame', '.slider-counter-content__current', '.slider-counter-content__total', 'portfolio-arrow-mobile_left', 'portfolio-arrow-mobile_right', 0, true);
    }
- })
+ });
 
 
   formulaTitles('.formula .wrapper_small', '.formula-item', '.formula-item-popup', '.formula-item__descr');
@@ -1013,13 +1036,28 @@ document.addEventListener('DOMContentLoaded', () => {
   reviewsSlider('.problems .wrapper_small',  '.problems-slider', '.problems-slider-wrap','.problems-slider__slide', 'problems-arrow_left', 'problems-arrow_right', 'active-item');
 
   transparencySlider('.portfolio .wrapper_middle', '.portfolio-slider-mobile', '.portfolio-slider__slide-frame', '.slider-counter-content__current', '.slider-counter-content__total', 'portfolio-arrow-mobile_left', 'portfolio-arrow-mobile_right', 0, true);
+
+  transparencySlider('.temp-wrapper1', '.types-repair1', '.repair-types-slider__slide', '#repair-current1', '#repair-total1', 'repair-types-arrow_left1', 'repair-types-arrow_right1'  );
+  transparencySlider('.temp-wrapper2', '.types-repair2', '.repair-types-slider__slide', '#repair-current2', '#repair-total2', 'repair-types-arrow_left2', 'repair-types-arrow_right2'  );
+  transparencySlider('.temp-wrapper3', '.types-repair3', '.repair-types-slider__slide', '#repair-current3', '#repair-total3', 'repair-types-arrow_left3', 'repair-types-arrow_right3'  );
+  transparencySlider('.temp-wrapper4', '.types-repair4', '.repair-types-slider__slide', '#repair-current4', '#repair-total4', 'repair-types-arrow_left4', 'repair-types-arrow_right4'  );
+  transparencySlider('.temp-wrapper5', '.types-repair5', '.repair-types-slider__slide', '#repair-current5', '#repair-total5', 'repair-types-arrow_left5', 'repair-types-arrow_right5'  );
+
+
+
+
+
+
+
+  typesSliderFirstInit();
   agreementFancybox();
   consultPopup();
   phoneAccordeon();
   sideMenu();
   repairTypesModal();
   privacyPopup();
-  tabs();
+  tabs('.scheme .nav-list', '.scheme-nav__item', '.scheme-slider__slide', '.scheme-description-block');
+  tabs('.nav-list-repair', '.repair-types-nav__item', false, false, true);
   accordeon();
   phoneValidation();
   formSend();
