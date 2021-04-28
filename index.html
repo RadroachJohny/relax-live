@@ -570,8 +570,36 @@
   </div><!-- /feedback-block -->
   <div class="portfolio" id="portfolio">
     <div class="wrapper_middle">
+
+      <div class="slider-counter slider-counter-responsive desktop-hide" id="portfolio-counter">
+        <div class="slider-counter-content">
+          <div class="slider-counter-content__current">1</div>
+          <div class="slider-counter-content__total">3</div>
+        </div>
+      </div>
+
+
+      <div class="slider-arrow slider-arrow_left-portfolio mobile-hide" id="portfolio-arrow_left">
+        <svg width="18" height="12" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 12"
+          preserveAspectRatio="xMinYMin meet">
+          <path
+            d="M.97 5.47a.75.75 0 0 0 0 1.06l4.773 4.773a.75.75 0 1 0 1.06-1.06L2.561 6l4.242-4.243a.75.75 0 0 0-1.06-1.06L.97 5.47zm16.53-.22h-16v1.5h16v-1.5z"
+            fill="#322823"></path>
+        </svg>
+      </div>
+      <div class="slider-arrow slider-arrow_right-portfolio mobile-hide" id="portfolio-arrow_right">
+        <svg width="17" height="12" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 12"
+          preserveAspectRatio="xMinYMin meet">
+          <path
+            d="M16.03 5.47a.75.75 0 0 1 0 1.06l-4.773 4.773a.75.75 0 0 1-1.06-1.06L14.439 6l-4.242-4.243a.75.75 0 1 1 1.06-1.06L16.03 5.47zM.5 5.25h15v1.5H.5v-1.5z"
+            fill="#322823"></path>
+        </svg>
+      </div>
+
+
       <div class="section-title portfolio-title">Вдохновляющее портфолио <span>реализованное нами</span></div>
-      <div class="portfolio-slider-wrap">
+
+      <div class="portfolio-slider-wrap" id="portfolio-slider-mobile">
         <div class="portfolio-slider-mobile tablet-hide desktop-hide">
           <div class="portfolio-slider__slide-frame"><img class="portfolio-slider__slide-frame-img"
               src="./images/portfolio/img_1.jpg" alt="img_1">
@@ -614,12 +642,12 @@
             <div class="item-hover"></div>
           </div><!-- /portfolio-slider__slide -->
         </div><!-- /portfolio-slider -->
-        <div class="slider-counter slider-counter-responsive desktop-hide" id="portfolio-counter">
+        <!-- <div class="slider-counter slider-counter-responsive desktop-hide" id="portfolio-counter">
           <div class="slider-counter-content">
             <div class="slider-counter-content__current">1</div>
             <div class="slider-counter-content__total">3</div>
           </div>
-        </div>
+        </div> -->
         <div class="slider-arrow-tablet-mobile slider-arrow-tablet-mobile_left tablet-hide desktop-hide"
           id="portfolio-arrow-mobile_left">
           <svg width="25" height="34" fill="none" viewBox="0 0 25 34" preserveAspectRatio="xMinYMin meet"
@@ -636,7 +664,9 @@
               stroke-linejoin="round"></path>
           </svg>
         </div>
-        <div class="slider-arrow slider-arrow_left-portfolio mobile-hide" id="portfolio-arrow_left">
+
+        <!-- HERE GOES ARROWS -->
+        <!-- <div class="slider-arrow slider-arrow_left-portfolio mobile-hide" id="portfolio-arrow_left">
           <svg width="18" height="12" fill="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 18 12"
             preserveAspectRatio="xMinYMin meet">
             <path
@@ -651,8 +681,10 @@
               d="M16.03 5.47a.75.75 0 0 1 0 1.06l-4.773 4.773a.75.75 0 0 1-1.06-1.06L14.439 6l-4.242-4.243a.75.75 0 1 1 1.06-1.06L16.03 5.47zM.5 5.25h15v1.5H.5v-1.5z"
               fill="#322823"></path>
           </svg>
-        </div>
-        <div class="portfolio-slider mobile-hide">
+        </div> -->
+
+
+        <div class="portfolio-slider mobile-hide" id="portfolio-slider-desktop">
           <div class="portfolio-slider__slide fade-tab">
             <div class="portfolio-slider__slide-frame"><img class="portfolio-slider__slide-frame-img"
                 src="./images/portfolio/img_1.jpg" alt="img_1">
@@ -715,6 +747,7 @@
           </div><!-- /portfolio-slider__slide -->
         </div><!-- /portfolio-slider -->
       </div><!-- /slider-wrap-->
+      
     </div>
   </div><!-- /portfolio -->
   <div class="transparency" id="transparency">
@@ -2215,7 +2248,7 @@
     </div>
     <div class="popup-dialog popup-dialog-portfolio">
       <div class="row">
-        <div class="popup-portfolio-slider-wrap">
+        <div class="popup-portfolio-slider-wrap" id='popup-slider__wrap'>
           <div class="close tablet-hide desktop-hide">
             <svg width="22" height="22" fill="none" viewBox="0 0 22 22" xmlns="http://www.w3.org/2000/svg">
               <path fill-rule="evenodd" clip-rule="evenodd"
@@ -2238,8 +2271,8 @@
           </div>
           <div class="slider-counter" id="popup-portfolio-counter">
             <div class="slider-counter-content">
-              <div class="slider-counter-content__current">1</div>
-              <div class="slider-counter-content__total">3</div>
+              <div class="slider-counter-content__current" id="portfolio-slider__current">1</div>
+              <div class="slider-counter-content__total" id="portfolio-slider__total">3</div>
             </div>
           </div>
           <div class="popup-arrow popup-arrow_left" id="popup_portfolio_left">
@@ -2938,360 +2971,3 @@
 </body>
 
 </html>
-
-<!-- <div hidden>
-  <table class="popup-repair-types-content-table__list">
-    <tbody>
-      <tr class="mobile-row showHide">
-        <td class="repair-types-name">Очистка потолка от побелки, краски,водоэмульсионки</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">130 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Очистка потолка от обоев</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">120 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Разборка ПВХ ,МДФ панелей с потолка</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">170 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Очистка потолка от побелки, краски,водоэмульсионки</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">110 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Очистка потолка от обоев</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">140 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Разборка ПВХ ,МДФ панелей с потолка</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">180 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Очистка потолка от побелки, краски,водоэмульсионки</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">100 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Очистка потолка от обоев</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">120 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Разборка ПВХ ,МДФ панелей с потолка</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">110 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Очистка потолка от побелки, краски,водоэмульсионки</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">100 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Очистка потолка от обоев</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">120 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Разборка ПВХ ,МДФ панелей с потолка</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">110 руб.</td>
-      </tr>
-    </tbody>
-  </table><!-- /popup-repair-types-tab-table-list -->
-  <!-- <table class="popup-repair-types-content-table__list">
-    <tbody>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Побелка, покраска</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">190 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Поклейка обоев</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">120 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Монтаж ПВХ ,МДФ панелей</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">170 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Очистка потолка от побелки, краски,водоэмульсионки</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">110 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Очистка потолка от обоев</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">140 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Разборка ПВХ ,МДФ панелей с потолка</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">180 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Очистка потолка от побелки, краски,водоэмульсионки</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">100 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Очистка потолка от обоев</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">120 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Разборка ПВХ ,МДФ панелей с потолка</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">110 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Очистка потолка от побелки, краски,водоэмульсионки</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">100 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Очистка потолка от обоев</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">120 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Разборка ПВХ ,МДФ панелей с потолка</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">110 руб.</td>
-      </tr>
-    </tbody>
-  </table><!-- /popup-repair-types-tab-table-list -->
-  <!-- <table class="popup-repair-types-content-table__list">
-    <tbody>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Очистка стен от побелки, краски,водоэмульсионки</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">130 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Очистка стен от обоев</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">105 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Разборка ПВХ ,МДФ панелей со стен</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">110 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Очистка потолка от побелки, краски,водоэмульсионки</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">110 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Очистка потолка от обоев</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">140 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Разборка ПВХ ,МДФ панелей с потолка</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">180 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Очистка потолка от побелки, краски,водоэмульсионки</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">100 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Очистка потолка от обоев</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">120 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Разборка ПВХ ,МДФ панелей с потолка</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">110 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Очистка потолка от побелки, краски,водоэмульсионки</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">100 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Очистка потолка от обоев</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">120 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Разборка ПВХ ,МДФ панелей с потолка</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">110 руб.</td>
-      </tr>
-    </tbody>
-  </table><!-- /popup-repair-types-tab-table-list -->
-  <!-- <table class="popup-repair-types-content-table__list">
-    <tbody>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Очистка потолка от побелки, краски,водоэмульсионки</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">150 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Поклейка обоев</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">100 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Разборка ПВХ ,МДФ панелей с потолка</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">170 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Очистка потолка от побелки, краски,водоэмульсионки</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">110 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Очистка потолка от обоев</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">140 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Разборка ПВХ ,МДФ панелей с потолка</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">180 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Очистка потолка от побелки, краски,водоэмульсионки</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">100 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Очистка потолка от обоев</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">120 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Разборка ПВХ ,МДФ панелей с потолка</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">110 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Очистка потолка от побелки, краски,водоэмульсионки</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">100 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Очистка потолка от обоев</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">120 руб.</td>
-      </tr>
-      <tr class="mobile-row">
-        <td class="repair-types-name">Разборка ПВХ ,МДФ панелей с потолка</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Ед.измерения</td>
-        <td class="mobile-col-title tablet-hide desktop-hide">Цена за ед.</td>
-        <td class="repair-types-value">м<sup>2</sup></td>
-        <td class="repair-types-value">110 руб.</td>
-      </tr>
-    </tbody>
-  </table> -->
-
-<!-- </div>  -->
-
