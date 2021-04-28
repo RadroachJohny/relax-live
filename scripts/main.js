@@ -858,8 +858,6 @@ document.addEventListener('DOMContentLoaded', () => {
  };
 
  const  transparencySlider = (outer, inner, slides, current, total, left, right, i = 0, mobile = false, sideMenu = false) => {
-   console.log(outer);
-   console.log(inner);
   const sliderOuter = document.querySelector(outer),
         sliderInner = sliderOuter.querySelector(inner),
         transparencySlides = sliderInner.querySelectorAll(slides),
@@ -871,7 +869,6 @@ document.addEventListener('DOMContentLoaded', () => {
         slideWidth = slideWidthPx.slice(0, slideWidthPx.length - 2);
 
 
-  console.log(current);
         let indexCount = i;
         let offset = slideWidth * i;
 
@@ -1001,6 +998,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
  };
 
+ const mobileNavScroll = () => {
+    const parent = document.querySelector('.nav.repair-types-nav');
+          navigation = parent.querySelector('.nav-list-repair'),
+          arrowLeft = document.querySelector('#nav-arrow-repair-left_base'),
+          arrowRight = document.querySelector('#nav-arrow-repair-right_base');
+
+          
+    let offset = 0;
+    
+  arrowRight.addEventListener('click', () => {
+    console.log(navigation.offsetWidth);
+    console.log(offset);
+    if (offset >= navigation.offsetWidth - parent.offsetWidth) {
+      offset = 0;
+    } else {
+
+      offset += (navigation.offsetWidth - parent.offsetWidth) / 4;
+    }
+    navigation.style.transform = `translateX(-${offset}px)`;
+  });
+
+  arrowLeft.addEventListener('click', () => {
+    console.log(navigation.offsetWidth);
+    console.log(offset);
+    if (offset <= 0) {
+      offset = navigation.offsetWidth - parent.offsetWidth;
+    } else {
+
+      offset -= (navigation.offsetWidth - parent.offsetWidth) / 4;
+    }
+    navigation.style.transform = `translateX(-${offset}px)`;
+  });
+ };
+
  function clearStyleHead() {
    let styles = document.head.querySelectorAll('style');
    styles.forEach(style => {
@@ -1048,7 +1079,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
-
+  mobileNavScroll();
   typesSliderFirstInit();
   agreementFancybox();
   consultPopup();
