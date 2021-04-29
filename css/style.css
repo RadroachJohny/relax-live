@@ -7009,10 +7009,18 @@ div.wave-block:nth-child(17):after {
     min-width: 900px;
   }
 }
-.popup-dialog-repair-types .nav-list {
-  justify-content: start;
-  min-width: 1700px;
+@media (max-width: 1024px) {
+  .popup-dialog-repair-types .nav-list {
+    justify-content: start;
+    min-width: 1800px;
+  }
+
+  .popup-dialog-repair-types .nav-list button {
+    flex-shrink: 0;
+
+  }
 }
+
 .nav-list_vertical {
   width: 319px;
   margin-left: auto;
@@ -8665,10 +8673,6 @@ strong {
  
 }
 
-/* .repair-types-slider {
-  overflow: visible;
+.popup-design-tab__item {
+  position: relative;
 }
-
-.outer-temp {
-  overflow: hidden;
-} */
