@@ -171,8 +171,8 @@ document.addEventListener('DOMContentLoaded', () => {
            
   };
 
-  const typesSliderFirstInit = () => {
-    const allSliders = document.querySelectorAll('.temp-wrapper');
+  const multipleSlidersFirstInit = (sliderClass) => {
+    const allSliders = document.querySelectorAll(sliderClass);
             allSliders.forEach((slider, index) => {
               slider.style.display = 'none';
               if (index === 0) {
@@ -181,7 +181,9 @@ document.addEventListener('DOMContentLoaded', () => {
             });
   };
 
-  const tabs = (container, tabsBtn, allSlides, description, changeSlider) => {
+
+
+  const tabs = (container, tabsBtn, allSlides, description, changeSlider, changeSliderAndPagination) => {
     const tabsContainer = document.querySelector(container),
           tabs = tabsContainer.querySelectorAll(tabsBtn);
 
@@ -205,12 +207,35 @@ document.addEventListener('DOMContentLoaded', () => {
       tabs.forEach((tab, tabIndex) => {
         if (target === tab) {
           tab.classList.add('active');
+          // Toggle repair types slider
           if (changeSlider) {
-            const allSliders = document.querySelectorAll('.temp-wrapper');
+            const allSliders = document.querySelectorAll(changeSlider);
+            console.log(changeSlider);
             allSliders.forEach((slider, index) => {
               slider.style.display = 'none';
               if (index === tabIndex) {
                 allSliders[index].style.display = 'flex';
+              }
+            });
+          }
+          // // Toggle modern design solutions slider and pagination
+          if (changeSliderAndPagination) {
+            // const allSliders = document.querySelectorAll('.designs-slider__style'),
+            const allSliders = document.querySelectorAll(changeSliderAndPagination),
+                  allPaginations = document.querySelectorAll('.designs .preview-block');
+                  
+            allSliders.forEach((slider, index) => {              
+              slider.style.display = 'none';
+              if (index === tabIndex) {
+                allSliders[index].style.display = 'block';
+              }
+            });
+
+            allPaginations.forEach((pagination, indexPag) => {
+              console.log(23);
+              pagination.style.display = 'none';
+              if (indexPag === tabIndex) {
+                allPaginations[indexPag].style.display = 'flex';
               }
             });
           }
@@ -224,6 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   };  
+
 
   const noBodyJump = () => {
     const block = document.createElement('div');
@@ -998,24 +1024,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
  };
 
- const mobileNavScroll = () => {
-    const parent = document.querySelector('.nav.repair-types-nav');
-          navigation = parent.querySelector('.nav-list-repair'),
-          arrowLeft = document.querySelector('#nav-arrow-repair-left_base'),
-          arrowRight = document.querySelector('#nav-arrow-repair-right_base');
+ const mobileNavScroll = (container, btn, left, right) => {
+    const parent = document.querySelector(container),
+          navigation = parent.querySelector(btn),
+          arrowLeft = document.querySelector(left),
+          arrowRight = document.querySelector(right);
 
           
     let offset = 0;
     
   arrowRight.addEventListener('click', () => {
-    console.log(navigation.offsetWidth);
-    console.log(offset);
+    
+
     if (offset >= navigation.offsetWidth - parent.offsetWidth) {
       offset = 0;
     } else {
 
       offset += (navigation.offsetWidth - parent.offsetWidth) / 4;
     }
+    console.log(parent);
+    console.log(navigation);
+
     navigation.style.transform = `translateX(-${offset}px)`;
   });
 
@@ -1030,6 +1059,51 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     navigation.style.transform = `translateX(-${offset}px)`;
   });
+ };
+
+ const paginationSliderPictureChange = () => {
+    const paginationBlocks = document.querySelectorAll('.designs .preview-block'),
+          allSliders = document.querySelectorAll('.designs-slider__style');
+          
+      function changeSlide(sliderIndex, i) {
+      const currentSlides = allSliders[sliderIndex].querySelectorAll('.designs-slider__style-slide');
+      currentSlides.forEach((slider, sliderIndex) => {
+        slider.style.display = 'none';
+        if (sliderIndex === i) {
+          slider.style.display = 'block';
+        }
+      });
+    }
+
+    paginationBlocks.forEach((paginationBlock, sliderIndex) => {
+      paginationBlock.addEventListener('click', (e) => {
+        console.log(e.target);
+        const target = e.target;
+        if (target.closest('.preview-block__item')){
+
+          const pagination = paginationBlock.querySelectorAll('.preview-block__item'),
+                inner = paginationBlock.querySelectorAll('.preview-block__item-inner');
+          
+          inner.forEach(item => {
+            console.log(111);
+            item.classList.remove('preview_active');
+            if (item.closest('.preview-block__item') === target.closest('.preview-block__item')) {
+              console.log(222);
+              item.classList.add('preview_active');
+            }
+          });
+
+          pagination.forEach((item, index) => {
+            if (item === target.closest('.preview-block__item')) {
+              changeSlide(sliderIndex, index);
+            }
+          });
+  
+        }
+      });
+    });
+          
+
  };
 
  function clearStyleHead() {
@@ -1068,6 +1142,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
   transparencySlider('.portfolio .wrapper_middle', '.portfolio-slider-mobile', '.portfolio-slider__slide-frame', '.slider-counter-content__current', '.slider-counter-content__total', 'portfolio-arrow-mobile_left', 'portfolio-arrow-mobile_right', 0, true);
 
+
+  transparencySlider('.designs-slider-wrap1', '.designs-slider__style1', '.designs-slider__style-slide', '.slider-counter-content__current1', '.slider-counter-content__total1', 'design_left1', 'design_right1');
+  transparencySlider('.designs-slider-wrap2', '.designs-slider__style2', '.designs-slider__style-slide', '.slider-counter-content__current2', '.slider-counter-content__total2', 'design_left2', 'design_right2');
+  transparencySlider('.designs-slider-wrap3', '.designs-slider__style3', '.designs-slider__style-slide', '.slider-counter-content__current3', '.slider-counter-content__total3', 'design_left3', 'design_right3');
+  transparencySlider('.designs-slider-wrap4', '.designs-slider__style4', '.designs-slider__style-slide', '.slider-counter-content__current4', '.slider-counter-content__total4', 'design_left4', 'design_right4');
+  transparencySlider('.designs-slider-wrap5', '.designs-slider__style5', '.designs-slider__style-slide', '.slider-counter-content__current5', '.slider-counter-content__total5', 'design_left5', 'design_right5');
+
   transparencySlider('.temp-wrapper1', '.types-repair1', '.repair-types-slider__slide', '#repair-current1', '#repair-total1', 'repair-types-arrow_left1', 'repair-types-arrow_right1'  );
   transparencySlider('.temp-wrapper2', '.types-repair2', '.repair-types-slider__slide', '#repair-current2', '#repair-total2', 'repair-types-arrow_left2', 'repair-types-arrow_right2'  );
   transparencySlider('.temp-wrapper3', '.types-repair3', '.repair-types-slider__slide', '#repair-current3', '#repair-total3', 'repair-types-arrow_left3', 'repair-types-arrow_right3'  );
@@ -1078,9 +1159,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+  paginationSliderPictureChange();
 
-  mobileNavScroll();
-  typesSliderFirstInit();
+  mobileNavScroll('#repair-types .nav.repair-types-nav', '#repair-types .nav-list.nav-list-repair', '#nav-arrow-repair-left_base', '#nav-arrow-repair-right_base');
+
+  mobileNavScroll('.nav.nav-designs', '.nav-list.nav-list-designs', '#nav-arrow-designs_left', '#nav-arrow-designs_right');
+
+  mobileNavScroll('#scheme .nav', '#scheme-list', '#nav-arrow-scheme_left', '#nav-arrow-scheme_right');
+
+  mobileNavScroll('.nav-popup-repair-types.transparancy-cut', '.nav-list-popup-repair', '#nav-arrow-popup-repair_left', '#nav-arrow-popup-repair_right');
+  
+  multipleSlidersFirstInit('.temp-wrapper');
+  multipleSlidersFirstInit('.designs-slider-wrap');
   agreementFancybox();
   consultPopup();
   phoneAccordeon();
@@ -1088,7 +1178,9 @@ document.addEventListener('DOMContentLoaded', () => {
   repairTypesModal();
   privacyPopup();
   tabs('.scheme .nav-list', '.scheme-nav__item', '.scheme-slider__slide', '.scheme-description-block');
-  tabs('.nav-list-repair', '.repair-types-nav__item', false, false, true);
+  tabs('.nav-list-repair', '.repair-types-nav__item', false, false, '.temp-wrapper');
+  tabs('.nav-list.nav-list-designs', '.designs-nav__item.designs-nav__item_base', false, false, false,  '.designs-slider-wrap');
+
   accordeon();
   phoneValidation();
   formSend();
