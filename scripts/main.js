@@ -90,15 +90,15 @@ document.addEventListener('DOMContentLoaded', () => {
         table = document.querySelectorAll('.popup-repair-types-content-table__list');
         table.forEach(tableOne => {
           tableOne.style.display = 'none';
-          table[i].style.display = 'block';
         });
+        table[i].style.display = 'block';
       }
 
       function renderNav() {
         res.forEach(elem => {
           if(elem.title) {
             const navBtn = document.createElement('button');
-            navBtn.classList.add('button_o', 'popup-repair-types-nav__item');
+            navBtn.className = 'button_o popup-repair-types-nav__item';
             navBtn.textContent = elem.title;
 
             navList.append(navBtn);
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
           if(elem.title) {
             const table = document.createElement('table'),
                   tbody = document.createElement('tbody');
-            table.classList.add('popup-repair-types-content-table__list');
+            table.className = 'popup-repair-types-content-table__list';
 
             elem.priceList.forEach(tableItem => {
               const tableRow = document.createElement('tr');
@@ -154,18 +154,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const accordeon = () => {
     const accordionWrapper = document.querySelector('.accordion'),
-          titleBlock = accordionWrapper.querySelectorAll('.title_block'),
-          accordionTexts = accordionWrapper.querySelectorAll('.msg');
+          titleBlock = accordionWrapper.querySelectorAll('.title_block');
 
           accordionWrapper.addEventListener('click', (e) =>{
             const target = e.target;   
 
             titleBlock.forEach(title => { 
+
               if ( target === title) {
                 title.classList.toggle('msg-active');
               } else if (target.classList.contains('title_block')){                        
                 title.classList.remove('msg-active');
               }
+
             });
           });
            
@@ -291,11 +292,6 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.style.paddingRight = scrollWidth + 'px';
   };
 
-  const clearBodyLock = () => {
-    document.body.style.overflow = '';
-    document.body.style.paddingRight = '';
-  };
-
   const privacyPopup = () => {
     const privacy = document.querySelectorAll('.link-privacy'),
           privacyPopup = document.querySelector('.popup-privacy');
@@ -314,11 +310,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const closeHandler = (e) => {
       const target = e.target;
       if (target.classList.contains('close')) {
-        // closeModal();
+        
         const popups = document.querySelectorAll('.popup');
         popups.forEach(popup => popup.style.visibility = ``);
-        clearBodyLock();
-        // СЛушатель нажатия на Esc убирается полсе закрытия модалки
+        document.body.style.overflow = '';
+        document.body.style.paddingRight = '';
+        
         document.removeEventListener('click',closeHandler);
       }
     
@@ -402,9 +399,23 @@ document.addEventListener('DOMContentLoaded', () => {
       form.addEventListener('submit', (e) => {
         e.preventDefault();
         const policyCheckbox = form.querySelector('.checkbox__input');
-        console.log(policyCheckbox);
+        const formInputs = form.querySelectorAll('input');
+        let exitFunc = false;
+        
         if (!policyCheckbox.checked) {
           alert('Вы должны согласиться на обработку данных перед отправкой');
+          return;
+        }
+
+        formInputs.forEach(input => {
+          console.log(input);
+          if(input.value.trim() === '') {            
+            exitFunc = true;            
+          }
+        })
+
+        if (exitFunc) {    
+          alert('Нельзя отправить пустую форму. Заполните все пустые поля');      
           return;
         }
 
@@ -412,7 +423,9 @@ document.addEventListener('DOMContentLoaded', () => {
         const jsonFormData = {};
         for (const pair of formData) {
           jsonFormData[pair[0]] = pair[1];
-        }        
+        } 
+        
+        
         
         messageSend('server.php', jsonFormData)
           .then(text => console.log(text))
@@ -519,10 +532,6 @@ document.addEventListener('DOMContentLoaded', () => {
          slidesToShow = 3, responsive = [], styleId, slideClass, overflow = true, current, total, hideArrows = false}) {
         this.main = document.querySelector(main);
         this.wrap = document.querySelector(wrap);
-        if (!this.main || !this.wrap || !this.slideClass) {          
-          console.warn('slider-carousel: Необходимо 3 селектора, "main", "wrapper" и "slideClass"');          
-        }
-
         this.hideArrows = hideArrows;
         this.overflow = overflow;
         this.slideClass = main;
@@ -541,7 +550,11 @@ document.addEventListener('DOMContentLoaded', () => {
           // widthSlide: Math.floor(100 / this.slidesToShow),
           maxPosition: this.slides.length - this.slidesToShow,
         };
-        this.responsive = responsive;        
+        this.responsive = responsive;   
+        
+        if (!this.main || !this.wrap || !this.slideClass) {          
+          console.warn('slider-carousel: Необходимо 3 селектора, "main", "wrapper" и "slideClass"');          
+        }
         
       }
       init() {        
@@ -599,10 +612,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         ${'.' + this.slideClass} {
           flex: 0 0 ${this.options.widthSlide}% !important;         
-          margin: auto 0 !important;
           max-width: none;
         }
         `;
+        // margin: auto 0 !important;
         document.head.append(style);
       }
       // flex: 0 0 ${this.options.widthSlide}% !important;  
@@ -632,11 +645,9 @@ document.addEventListener('DOMContentLoaded', () => {
             } else if (this.options.position < this.options.maxPosition){
               this.next.style.visibility = 'visible';
             }
-          }
+          }         
           
-          
-        }
-       
+        }       
       }
       
       nextSlider() {
@@ -658,12 +669,10 @@ document.addEventListener('DOMContentLoaded', () => {
           } else if (this.options.position > 0){
             this.prev.style.visibility = 'visible';
           }
-        }
-        
+        }       
 
         }
       }
-
 
       addArrow() {
         this.prev = document.createElement('button');
@@ -850,26 +859,15 @@ document.addEventListener('DOMContentLoaded', () => {
             if (slide === target) {
               document.querySelector('.popup.popup-portfolio').style.visibility = 'visible';
               noBodyJump();
-              document.addEventListener('click',closeHandler);   
-              
-              if (window.innerWidth < 800) {
-                transparencySlider('#popup-slider__wrap', '.popup-portfolio-slider', '.popup-portfolio-slider__slide', '#portfolio-slider__current', '#portfolio-slider__total', 'popup_portfolio_left', 'popup_portfolio_right', indexSlide, false,'.popup-portfolio-text');
-              } else {
-                transparencySlider('#popup-slider__wrap', '.popup-portfolio-slider', '.popup-portfolio-slider__slide', '#portfolio-slider__current', '#portfolio-slider__total', 'popup_portfolio_left', 'popup_portfolio_right', indexSlide, false, '.popup-portfolio-text');
-              }
+              document.addEventListener('click',closeHandler);              
 
-            
-
-              portfolioPopup(indexSlide);
+              transparencySlider('#popup-slider__wrap', '.popup-portfolio-slider', '.popup-portfolio-slider__slide', '#portfolio-slider__current', '#portfolio-slider__total', 'popup_portfolio_left', 'popup_portfolio_right', indexSlide, false, '.popup-portfolio-text');
 
             }
           });
         }
       });
 
-      function portfolioPopup(i) {
-
-      }
   }; 
 
   const agreementFancybox = () => {
@@ -911,13 +909,13 @@ document.addEventListener('DOMContentLoaded', () => {
           currentSlide = sliderOuter.querySelector(current),
           totalSlide = sliderOuter.querySelector(total),
           transparencyLeft = document.getElementById(left),
-          transparencyRight = document.getElementById(right),
-          slideWidthPx = window.getComputedStyle(sliderOuter).width,
+          transparencyRight = document.getElementById(right);
+        let  slideWidthPx = window.getComputedStyle(sliderOuter).width,
           slideWidth = slideWidthPx.slice(0, slideWidthPx.length - 2);
 
 
           let indexCount = i;
-          let offset = slideWidth * i;
+          let offset = slideWidth * indexCount;
 
     if (mobile) {
       if (window.innerWidth > 575) {
@@ -943,7 +941,19 @@ document.addEventListener('DOMContentLoaded', () => {
       slide.style.width = slideWidth + 'px';
     });
 
-    
+
+
+    window.addEventListener('resize', () => {
+      slideWidthPx = window.getComputedStyle(sliderOuter).width;
+      slideWidth = slideWidthPx.slice(0, slideWidthPx.length - 2);
+
+      offset = slideWidth * indexCount;
+
+      transparencySlides.forEach(slide => {
+        slide.style.width = slideWidth + 'px';
+      });
+
+    });
 
     transparencyLeft.addEventListener('click', () => {
       console.log('click');
@@ -965,11 +975,17 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     transparencyRight.addEventListener('click', () => {
+      slideWidthPx = window.getComputedStyle(sliderOuter).width;
+      slideWidth = slideWidthPx.slice(0, slideWidthPx.length - 2);
+      offset = slideWidth * indexCount;
+
       sliderInner.style.transition = 'transform 0.35s ease-in-out';
       if (offset === slideWidth * (transparencySlides.length - 1)) {
+        console.log('if');
         offset = 0;
         indexCount = 0;
       } else {
+        console.log('else');
         offset += +slideWidth;
         indexCount++;
       }      
@@ -1012,11 +1028,10 @@ document.addEventListener('DOMContentLoaded', () => {
               }
 
               if (hint.getBoundingClientRect().left <=0) {
-                console.log(hint.getBoundingClientRect().left);
+                const wrapperOffset = document
                 hint.style.transform = `translateX(${Math.abs(Math.floor(hint.getBoundingClientRect().left))}px)`;
               
               } else if (hint.getBoundingClientRect().left + hint.clientWidth > window.innerWidth) {
-                console.log(324234);
                 let distance = window.innerWidth - hint.getBoundingClientRect().left;
                 let rest = hint.clientWidth - distance;
                 hint.style.transform = `translateX(-${rest}px)`;
@@ -1135,6 +1150,8 @@ document.addEventListener('DOMContentLoaded', () => {
       popupDesign.style.visibility = 'visible';
       noBodyJump();
       document.addEventListener('click',closeHandler);
+
+      sliderTextInfoInit();
     });
   };
 
@@ -1162,14 +1179,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-
   formulaTitles('.formula .wrapper_small', '.formula-item', '.formula-item-popup', '.formula-item__descr');
-  formulaTitles('.formula .desktop-hide .formula-slider', '.desktop-hide .formula-item', '.desktop-hide .formula-item-popup', '.desktop-hide .formula-item__descr');  
-
+  formulaTitles('.formula .desktop-hide .formula-slider', '.desktop-hide .formula-item', '.desktop-hide .formula-item-popup', '.desktop-hide .formula-item__descr');
   formulaTitles('.problems .wrapper_middle', '.problems-item', '.problems-item-popup', '.problems-item__descr');
 
   reviewsSlider('.reviews-slider-wrap', '.reviews-slider', '.reviews-slider__outer', '.reviews-slider__slide', 'reviews-arrow_left', 'reviews-arrow_right');
-
   reviewsSlider('.problems .wrapper_small',  '.problems-slider', '.problems-slider-wrap','.problems-slider__slide', 'problems-arrow_left', 'problems-arrow_right', 'active-item');
 
   transparencySlider('.portfolio .wrapper_middle', '.portfolio-slider-mobile', '.portfolio-slider__slide-frame', '.slider-counter-content__current', '.slider-counter-content__total', 'portfolio-arrow-mobile_left', 'portfolio-arrow-mobile_right', 0, true);
@@ -1194,46 +1208,34 @@ document.addEventListener('DOMContentLoaded', () => {
   transparencySlider('.popup-design-slider-wrap4', '.popup-designs-slider__style4', '.popup-design-slider__style-slide', '.slider-counter-content__current4', '.slider-counter-content__total4', 'popup_design_left4', 'popup_design_right4'  );
   transparencySlider('.popup-design-slider-wrap5', '.popup-designs-slider__style5', '.popup-design-slider__style-slide', '.slider-counter-content__current5', '.slider-counter-content__total5', 'popup_design_left5', 'popup_design_right5'  );
 
-
-
-
-
-  paginationSliderPictureChange();
-
   mobileNavScroll('#repair-types .nav.repair-types-nav', '#repair-types .nav-list.nav-list-repair', '#nav-arrow-repair-left_base', '#nav-arrow-repair-right_base');
-
   mobileNavScroll('.nav.nav-designs', '.nav-list.nav-list-designs', '#nav-arrow-designs_left', '#nav-arrow-designs_right');
-
   mobileNavScroll('#scheme .nav', '#scheme-list', '#nav-arrow-scheme_left', '#nav-arrow-scheme_right');
-
   mobileNavScroll('.nav-popup-repair-types.transparancy-cut', '.nav-list-popup-repair', '#nav-arrow-popup-repair_left', '#nav-arrow-popup-repair_right');
-
   mobileNavScroll('.popup-design .nav-designs.nav-popup', '#nav-list-popup-designs', '#nav-arrow-popup-designs_left', '#nav-arrow-popup-designs_right');
 
+  tabs('.scheme .nav-list', '.scheme-nav__item', '.scheme-slider__slide', '.scheme-description-block');
+  tabs('.nav-list-repair', '.repair-types-nav__item', false, false, '.temp-wrapper');
+  tabs('.nav-list.nav-list-designs', '.designs-nav__item.designs-nav__item_base', false, false, false,  '.designs-slider-wrap', true);
+  tabs('#nav-list-popup-designs', '.designs-nav__item.designs-nav__item_popup', false, false, '.popup-design-slider-wrap', false, true);
 
-  
+  portfolioPopupTrigger( '#portfolio-slider-desktop', '.portfolio-slider__slide .portfolio-slider__slide-frame');
+  portfolioPopupTrigger('#portfolio-slider-mobile', '.portfolio-slider-mobile .portfolio-slider__slide-frame');
+
   multipleSlidersFirstInit('.temp-wrapper');
   multipleSlidersFirstInit('.designs-slider-wrap');
+  paginationSliderPictureChange();
   agreementFancybox();
   consultPopup();
   phoneAccordeon();
   sideMenu();
   repairTypesModal();
   privacyPopup();
-  tabs('.scheme .nav-list', '.scheme-nav__item', '.scheme-slider__slide', '.scheme-description-block');
-  tabs('.nav-list-repair', '.repair-types-nav__item', false, false, '.temp-wrapper');
-  tabs('.nav-list.nav-list-designs', '.designs-nav__item.designs-nav__item_base', false, false, false,  '.designs-slider-wrap', true);
-
-  tabs('#nav-list-popup-designs', '.designs-nav__item.designs-nav__item_popup', false, false, '.popup-design-slider-wrap', false, true);
-
-  sliderTextInfoInit();
   designPopup();
   accordeon();
   phoneValidation();
   formSend();
   carouselSlider();
-  portfolioPopupTrigger( '#portfolio-slider-desktop', '.portfolio-slider__slide .portfolio-slider__slide-frame');
-  portfolioPopupTrigger('#portfolio-slider-mobile', '.portfolio-slider-mobile .portfolio-slider__slide-frame');
 
 
 });
