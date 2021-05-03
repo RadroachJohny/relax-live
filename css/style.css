@@ -950,7 +950,9 @@ template,
 @media (max-width: 1200px) {
   .formula .wrapper_small {
     margin-top: 42px;
-    max-width: 810px;
+    /* max-width: 810px; */
+    width: 92%;
+    max-width: none;
   }
 }
 .formula:before {
@@ -1036,7 +1038,7 @@ template,
    
   }
   .formula-slider-wrap.formula-slide-item-slider {
-    width: 90%;
+    width: 100%;
     margin: 0 auto;
     overflow: hidden;
   }
@@ -7005,8 +7007,8 @@ div.wave-block:nth-child(17):after {
     display: -ms-flexbox;
     display: flex;
     -ms-flex-wrap: wrap;
-    /* flex-wrap: nowrap; */
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
+    /* flex-wrap: wrap; */
     max-width: 100%;
   }
 }
@@ -8047,6 +8049,13 @@ div.wave-block:nth-child(17):after {
   #transparency-arrow_left,
   #transparency-arrow_right {
     display: none;
+  }
+}
+
+@media (max-width: 1024px) {
+  #problems-arrow_right,
+  #problems-arrow_left {
+    top: 50%;
   }
 }
 
